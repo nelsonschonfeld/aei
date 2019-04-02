@@ -1,6 +1,8 @@
 package demo
 
-class People {
+import enums.PersonTypeEnum
+
+class Person {
 
     String name
     String surname
@@ -13,9 +15,10 @@ class People {
     Date birthPlace
     String profession
     String professionPlace
+    PersonTypeEnum type
+    String comment
     Date dateCreated
     Date lastUpdated
-    String type
     Boolean active
 
     static constraints = {

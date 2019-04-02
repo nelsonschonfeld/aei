@@ -46,8 +46,10 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                            aria-expanded="false">Personas <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="#">Crear</a></li>
-                            <li><a href="#">Listar</a></li>
+                            <li><a href="/person/index">Personas</a></li>
+                            <li><a href="/person/create">Crear Persona</a></li>
+                            <li><a href="/person/edit">Editar Persona</a></li>
+                            <li><a href="/person/show">Ver Persona</a></li>
                         </ul>
                     </li>
                     <li class="dropdown">
