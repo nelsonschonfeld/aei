@@ -174,7 +174,7 @@ img {
 }
 
 .nav li.dropdown.open ul.dropdown-menu {
-    background-color: #4D8618;
+    background-color: #2a58b9;
 }
 
 /* CREATE/EDIT FORMS AND SHOW PAGES */
@@ -446,7 +446,7 @@ th.desc a {
 }
 
 th:hover, tr:hover {
-    background: #79b94c;
+    background: #6c9cb9;
 }
 
 /* PAGINATION */

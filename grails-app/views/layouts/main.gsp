@@ -37,9 +37,9 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                            aria-expanded="false">Usuarios <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="/user/index">Crear Usuarios</a></li>
-                            <li><a href="/role/index">Listar Roles</a></li>
-                            <li><a href="/userRole/index">Asignar Roles</a></li>
+                            <li><a href="/user/index">Usuarios</a></li>
+                            <li><a href="/role/index">Roles</a></li>
+                            <li><a href="/userRole/index">Roles Asignados</a></li>
                         </ul>
                     </li>
                     <li class="dropdown">
