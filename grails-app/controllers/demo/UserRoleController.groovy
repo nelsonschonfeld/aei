@@ -42,8 +42,8 @@ class UserRoleController {
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.created.message', args: [message(code: 'userRole.label', default: 'UserRole'), userRole.id])
-                redirect userRole
+                flash.message = message(code: 'default.created.message', args: [message(code: 'userRole.label', default: 'UserRole'), 'puto'])
+                redirect action:"index", method:"GET"
             }
             '*' { respond userRole, [status: CREATED] }
         }
