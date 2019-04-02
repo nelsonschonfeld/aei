@@ -1,7 +1,7 @@
 package demo
 
 class Inscription {
-    People student
+    Person student
     Course course
     Long discountAmount
     String status
