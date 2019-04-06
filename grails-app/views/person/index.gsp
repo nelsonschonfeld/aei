@@ -22,7 +22,7 @@
                 <g:form action="index" method="GET">
                     <div class="fieldcontain">
                         <label for="query">Buscar:</label>
-                        <g:textField name="query" value="${params.query}"/>
+                        <g:textField name="query" value="${params.query}" placeholder="Nombre,Apellido,DNI"/>
                     </div>
                 </g:form>
             </fieldset>
