@@ -12,7 +12,7 @@ class UserRoleController {
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
     def index(Integer max) {
-        params.max = Math.min(max ?: 10, 100)
+        params.max = Math.min(max ?: 20, 100)
         respond UserRole.list(params), model:[userRoleCount: UserRole.count()]
     }
 
@@ -42,7 +42,7 @@ class UserRoleController {
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.created.message', args: [message(code: 'userRole.label', default: 'UserRole'), 'puto'])
+                flash.message = message(code: 'default.created.message', args: [message(code: 'userRole.label', default: 'UserRole'), userRole.id])
                 redirect action:"index", method:"GET"
             }
             '*' { respond userRole, [status: CREATED] }
