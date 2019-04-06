@@ -21,9 +21,9 @@ class Person {
     Date lastUpdated
 
     static constraints = {
+        dni(nullable:false, unique:true, matches:'\\d{7,10}')
         name(nullable:false)
         surname(nullable:false)
-        dni(nullable:false, matches:'\\d{7,10}')
         email(nullable:false, email:true)
         address(nullable:false)
         cellphone(nullable:false, matches:'\\d{9,15}')
