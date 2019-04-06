@@ -48,8 +48,6 @@
                         <ul class="dropdown-menu">
                             <li><a href="/person/index">Personas</a></li>
                             <li><a href="/person/create">Crear Persona</a></li>
-                            <li><a href="/person/edit">Editar Persona</a></li>
-                            <li><a href="/person/show">Ver Persona</a></li>
                         </ul>
                     </li>
                     <li class="dropdown">
