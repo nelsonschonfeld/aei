@@ -42,7 +42,7 @@ class PersonController {
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.created.message', args: [message(code: 'person.label', default: 'Person'), person.id])
+                flash.message = message(code: 'default.created.message.a', args: [message(code: 'person.label', default: 'Person'), person.id])
                 redirect person
             }
             '*' { respond person, [status: CREATED] }
@@ -71,7 +71,7 @@ class PersonController {
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.updated.message', args: [message(code: 'person.label', default: 'Person'), person.id])
+                flash.message = message(code: 'default.updated.message.a', args: [message(code: 'person.label', default: 'Person'), person.id])
                 redirect person
             }
             '*'{ respond person, [status: OK] }
@@ -79,6 +79,7 @@ class PersonController {
     }
 
     @Transactional
+    @Secured(['ROLE_ADMIN' ])
     def delete(Person person) {
 
         if (person == null) {
@@ -91,7 +92,7 @@ class PersonController {
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.deleted.message', args: [message(code: 'person.label', default: 'Person'), person.id])
+                flash.message = message(code: 'default.deleted.message.a', args: [message(code: 'person.label', default: 'Person'), person.id])
                 redirect action:"index", method:"GET"
             }
             '*'{ render status: NO_CONTENT }

@@ -19,16 +19,15 @@ class Person {
     String comment
     Date dateCreated
     Date lastUpdated
-    Boolean active = true
 
     static constraints = {
         name(nullable:false)
         surname(nullable:false)
-        dni(nullable:false)
-        email(nullable:false)
+        dni(nullable:false, matches:'\\d{7,10}')
+        email(nullable:false, email:true)
         address(nullable:false)
-        cellphone(nullable:false)
-        telephone(nullable:true)
+        cellphone(nullable:false, matches:'\\d{9,15}')
+        telephone(nullable:true, matches:'\\d{7,15}')
         birthDate(nullable:false)
         birthPlace(nullable:true)
         profession(nullable:true)
@@ -37,6 +36,5 @@ class Person {
         comment(nullable:true)
         dateCreated display:false
         lastUpdated display:false
-        active display:false
     }
 }
