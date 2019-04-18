@@ -56,8 +56,8 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                            aria-expanded="false">Cursos <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="#">Crear</a></li>
-                            <li><a href="#">Listar</a></li>
+                            <li><a href="/course/index">Cursos</a></li>
+                            <li><a href="/course/create">Crear Curso</a></li>
                         </ul>
                     </li>
                     <li class="dropdown">

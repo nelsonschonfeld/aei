@@ -1,5 +1,7 @@
 package demo
 
+import enums.CourseStatusEnum
+
 class BootStrap {
 
     def init = { servletContext ->
