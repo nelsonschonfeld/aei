@@ -2,7 +2,7 @@ package demo
 
 import enums.CourseStatusEnum
 
-class Course implements Serializable {
+class Course {
 
     String id
     String name
