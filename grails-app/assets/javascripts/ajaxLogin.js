@@ -55,9 +55,9 @@ function authAjax() {
                 $("#loginMessage").empty();
                 $("#ajaxLogin").jqmHide();
                 $("#loginLink").html(
-                    'Logged in as ' + json.username +
-                    ' (<a href="' + $("#_logout").attr("href") +
-                    '" id="logout">Logout</a>)');
+                    'Usuario Logueado <u><b>' + json.username +
+                    '</u></b><br> <a href="' + $("#_logout").attr("href") +
+                    '" id="logout">Salir</a>');
                 $("#logout").click(logout);
                 if (onLogin) {
                     // execute the saved event.success function

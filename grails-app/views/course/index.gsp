@@ -23,7 +23,7 @@
     <g:if test="${flash.message}">
         <div class="message" role="status">${flash.message}</div>
     </g:if>
-    <f:table collection="${courseList}" properties="['name','type','year','teacher','amount','firstDueCost','secondDueCost','printCost','schedule','monday','thursday','wednesday','tuesday','friday','saturday','status']"/>
+    <f:table collection="${courseList}" properties="['id','name','type','year','teacher','amount','schedule','monday','thursday','wednesday','tuesday','friday','saturday','status']"/>
 
     <g:if test="${courseCount > 20}">
         <div class="pagination">

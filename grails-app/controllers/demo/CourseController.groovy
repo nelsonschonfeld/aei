@@ -39,7 +39,7 @@ class CourseController {
         }
 
         try {
-            course.id = course.name +'-'+ course.type +'-'+ course.year
+            course.id = course.name +' '+ course.type +' '+ course.year
             course.save flush:true
         }catch (Exception e){
             flash.error = "El course con la conbinación del NOMBRE, TIPO y AÑO ya se registró. Verifícalo."

@@ -29,7 +29,7 @@ class Course {
     static constraints = {
         name(nullable: false)
         type(nullable: false)
-        year(nullable: false)
+        year(nullable: false, matches: "^[0-9][0-9][0-9][0-9]\$")
         teacher(nullable: false)
         amount(nullable: false)
         firstDueCost(nullable: false)
