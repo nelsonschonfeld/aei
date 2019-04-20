@@ -23,6 +23,14 @@
     <g:if test="${flash.message}">
         <div class="message" role="status">${flash.message}</div>
     </g:if>
+    <fieldset class="form">
+        <g:form action="index" method="GET">
+            <div class="fieldcontain">
+                <label for="query">Buscar:</label>
+                <g:textField name="query" value="${params.query}" placeholder="Nombre,Tipo,Año,Profesor/a"/>
+            </div>
+        </g:form>
+    </fieldset>
     <f:table collection="${courseList}" properties="['id','name','type','year','teacher','amount','schedule','monday','thursday','wednesday','tuesday','friday','saturday','status']"/>
 
     <g:if test="${courseCount > 20}">

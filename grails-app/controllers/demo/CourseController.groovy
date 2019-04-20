@@ -13,7 +13,17 @@ class CourseController {
 
     def index(Integer max) {
         params.max = Math.min(max ?: 20, 100)
-        respond Course.list(params), model:[courseCount: Course.count()]
+        def courseList = Course.createCriteria().list(params) {
+            if(params.query){
+                or {
+                    and {ilike('name', "%${params.query}%")}
+                    and {ilike('type', "%${params.query}%")}
+                    and {ilike('year', "%${params.query}%")}
+                    and {ilike('teacher', "%${params.query}%")}
+                }
+            }
+        }
+        respond courseList, model:[courseCount: Course.count()]
     }
 
     def show(Course course) {
