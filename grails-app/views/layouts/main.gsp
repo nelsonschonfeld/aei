@@ -38,8 +38,8 @@
                            aria-expanded="false">Usuarios <span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <li><a href="/user/index">Usuarios</a></li>
-                            <li><a href="/role/index">Roles</a></li>
-                            <li><a href="/userRole/index">Roles Asignados</a></li>
+                            <li><a href="/role/index">Perfiles</a></li>
+                            <li><a href="/userRole/index">Perfiles Asignados</a></li>
                         </ul>
                     </li>
                     <li class="dropdown">
@@ -48,8 +48,6 @@
                         <ul class="dropdown-menu">
                             <li><a href="/person/index">Personas</a></li>
                             <li><a href="/person/create">Crear Persona</a></li>
-                            <li><a href="/person/edit">Editar Persona</a></li>
-                            <li><a href="/person/show">Ver Persona</a></li>
                         </ul>
                     </li>
                     <li class="dropdown">

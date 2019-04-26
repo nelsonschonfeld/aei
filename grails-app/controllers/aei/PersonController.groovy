@@ -12,8 +12,19 @@ class PersonController {
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
     def index(Integer max) {
-        params.max = Math.min(max ?: 10, 100)
-        respond Person.list(params), model:[personCount: Person.count()]
+        params.max = Math.min(max ?: 20, 100)
+
+        def personList = Person.createCriteria().list (params) {
+            if ( params.query ) {
+                or {
+                    and {ilike("name", "%${params.query}%")}
+                    and {ilike("surname", "%${params.query}%")}
+                    and {ilike("dni", "%${params.query}%")}
+                }
+            }
+        }
+
+        respond personList, model:[personCount: Person.count()]
     }
 
     def show(Person person) {
