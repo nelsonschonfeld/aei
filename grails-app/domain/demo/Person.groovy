@@ -20,6 +20,7 @@ class Person {
     Date dateCreated
     Date lastUpdated
 
+
     static constraints = {
         dni(nullable:false, unique:true, matches:'\\d{7,10}')
         name(nullable:false)

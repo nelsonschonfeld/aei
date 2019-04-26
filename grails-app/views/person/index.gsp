@@ -18,6 +18,14 @@
             <g:if test="${flash.message}">
                 <div class="message" role="status">${flash.message}</div>
             </g:if>
+            <fieldset class="form">
+                <g:form action="index" method="GET">
+                    <div class="fieldcontain">
+                        <label for="query">Buscar:</label>
+                        <g:textField name="query" value="${params.query}" placeholder="Nombre,Apellido,DNI"/>
+                    </div>
+                </g:form>
+            </fieldset>
             <f:table collection="${personList}" />
 
             <g:if test="${personCount > 20}">
