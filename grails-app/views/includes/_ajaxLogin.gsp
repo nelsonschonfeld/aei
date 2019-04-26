@@ -4,10 +4,12 @@
 
 <span id="loginLink" style="position: relative; margin-right: 30px; float: right">
     <sec:ifLoggedIn>
-        Logged in as <sec:username/> (<g:link elementId='logout' controller='logout'>Logout</g:link>)
+        Usuario Logueado: <u><b><sec:username/></b></u>
+        <br>
+        <g:link elementId='logout' controller='logout'> Salir</g:link>
     </sec:ifLoggedIn>
     <sec:ifNotLoggedIn>
-        <a href="#" onclick="showLogin(); return false;">Login</a>
+        <a href="#" onclick="showLogin(); return false;">Identíficate</a>
     </sec:ifNotLoggedIn>
 </span>
 
