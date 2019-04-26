@@ -13,6 +13,7 @@ class PersonController {
 
     def index(Integer max) {
         params.max = Math.min(max ?: 20, 100)
+        respond Person.list(params), model:[personCount: Person.count()]
 
         def personList = Person.createCriteria().list (params) {
             if ( params.query ) {
@@ -53,7 +54,7 @@ class PersonController {
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.created.message', args: [message(code: 'person.label', default: 'Person'), person.id])
+                flash.message = message(code: 'default.created.message.a', args: [message(code: 'person.label', default: 'Person'), person.id])
                 redirect person
             }
             '*' { respond person, [status: CREATED] }
@@ -82,7 +83,7 @@ class PersonController {
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.updated.message', args: [message(code: 'person.label', default: 'Person'), person.id])
+                flash.message = message(code: 'default.updated.message.a', args: [message(code: 'person.label', default: 'Person'), person.id])
                 redirect person
             }
             '*'{ respond person, [status: OK] }
@@ -90,6 +91,7 @@ class PersonController {
     }
 
     @Transactional
+    @Secured(['ROLE_ADMIN' ])
     def delete(Person person) {
 
         if (person == null) {
@@ -102,7 +104,7 @@ class PersonController {
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.deleted.message', args: [message(code: 'person.label', default: 'Person'), person.id])
+                flash.message = message(code: 'default.deleted.message.a', args: [message(code: 'person.label', default: 'Person'), person.id])
                 redirect action:"index", method:"GET"
             }
             '*'{ render status: NO_CONTENT }
