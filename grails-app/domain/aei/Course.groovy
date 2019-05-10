@@ -10,11 +10,11 @@ class Course {
     String year
     String teacher
     String schedule
-    Long amount
-    Long firstDueCost
-    Long secondDueCost
-    Long inscriptionCost
-    Long testCost
+    Double amount
+    Double firstDueCost
+    Double secondDueCost
+    Double inscriptionCost
+    Double testCost
     Long printCost
     Boolean monday
     Boolean thursday
@@ -51,5 +51,9 @@ class Course {
 
     static mapping = {
         id generator: 'assigned'
+    }
+
+    String toString(){
+        return name + ' ' + type + ' ' + year
     }
 }

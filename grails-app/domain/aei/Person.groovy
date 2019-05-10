@@ -38,4 +38,8 @@ class Person {
         dateCreated display:false
         lastUpdated display:false
     }
+
+    String toString(){
+        return name + ' ' + surname + ' ' + dni
+    }
 }
