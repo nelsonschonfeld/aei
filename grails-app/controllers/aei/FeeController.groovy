@@ -58,7 +58,7 @@ class FeeController {
         !courseDetail.friday ?: stringList.add("Viernes")
         !courseDetail.saturday ?: stringList.add("Sabado")
         def days = stringList.join(" - ")
-        render ([courseAmount:courseDetail.amount, courseTestCost:courseDetail.testCost, coursePrintCost:courseDetail.printCost, courseSchedule:courseDetail.schedule, courseDays: days, courseStatus:courseDetail.status.toString()] as JSON)
+        render ([courseAmount:courseDetail.amount, courseInscriptionCost:courseDetail.inscriptionCost, courseTestCost:courseDetail.testCost, coursePrintCost:courseDetail.printCost, courseSchedule:courseDetail.schedule, courseDays: days, courseStatus:courseDetail.status.toString(), courseTeacher:courseDetail.teacher, courseYear:courseDetail.year] as JSON)
     }
 
     @Transactional
@@ -68,46 +68,62 @@ class FeeController {
             notFound()
             return
         }
-        println(params.inscriptionsSelect)
-        println(params.studentsInscriptos)
-        println(fee.status)
-        println(fee.month)
-        println(fee.firstExpiredDate)
-        println(fee.secondExpiredDate)
-        println(getParams())
+        //validacion Cursos
+        if (params.inscriptionsSelect == null || params.inscriptionsSelect == "0" || params.inscriptionsSelect == 0) {
+            flash.error = "Debe seleccionar el Curso Inscripto."
+            respond fee, view: 'create'
+            return
+        }
+        //validacion alumnos
+        if (params.studentsInscriptos == null || params.inscriptionsSelect == [] || params.inscriptionsSelect.size() == 0) {
+            flash.error = "Debe seleccionar el o los Alumnos"
+            respond fee, view: 'create'
+            return
+        }
+        //validacion cuota
+        if (params.courseAmount == null || params.courseAmount == "" || params.courseAmount == "0") {
+            flash.error = "La Cuota no puede ser vacio o cero"
+            respond fee, view: 'create'
+            return
+        }
 
-        //for (String student : Eval.me(params.studentsInscriptos.toString())) {
+        for (String student : Eval.me(params.studentsInscriptos.toString())) {
+            def newFee = fee.clone()
             try {
-                println("nels save")
-                println(params.inscriptionsSelect)
-                println(params.studentsInscriptos)
-                fee.id = params.inscriptionsSelect + '_' + params.studentsInscriptos + '_' + fee.month
-                println(Inscription.get(params.inscriptionsSelect))
-                fee.inscription = Inscription.get(params.inscriptionsSelect)
-                println(Person.findByDni(params.studentsInscriptos))
-                fee.student = Person.findByDni(params.studentsInscriptos)
+                newFee.id = params.inscriptionsSelect + '_' + student + '_' + newFee.month
+                newFee.inscription = Inscription.get(params.inscriptionsSelect)
+                newFee.student = Person.findByDni(student)
+                newFee.amount = Double.parseDouble(params.courseAmount)
+                newFee.inscriptionCost = params.checkCourseInscriptionCost ? Double.parseDouble(params.courseInscriptionCost) : null
+                newFee.testCost = params.checkCourseTestCost ? Double.parseDouble(params.courseTestCost) : null
+                newFee.printCost = params.checkCoursePrintCost ? Double.parseDouble(params.coursePrintCost) : null
+                newFee.year = params.courseYear
 
-                if (fee.hasErrors()) {
+                if (newFee.hasErrors()) {
                     transactionStatus.setRollbackOnly()
-                    respond fee.errors, view:'create'
+                    respond newFee.errors, view: 'create'
                     return
                 }
 
-                fee.save flush: true
+                newFee.save flush: true
             } catch (Exception e) {
-                flash.error = "La cuota para del ESTUDIANTE: ${student} y MES: ${fee.month} ya se registro en el correspondiente Curso."
-                respond fee, view: 'create'
+                transactionStatus.setRollbackOnly()
+                flash.error = "La Cuota para el ALUMNO: ${student} y el MES: ${newFee.month} ya se genero anteriormente."
+                respond newFee, view: 'create'
                 return
             }
-        //}
-
-        request.withFormat {
-            form multipartForm {
-                flash.message = message(code: 'default.created.message', args: [message(code: 'fee.label', default: 'Fee'), fee.id])
-                redirect fee
-            }
-            '*' { respond fee, [status: CREATED] }
         }
+
+        flash.message = "La/s Cuota/s fueron generadas correctamente."
+        respond new Fee(params), view: 'create'
+
+//        request.withFormat {
+//            form multipartForm {
+//                flash.message = message(code: 'default.created.message', args: [message(code: 'fee.label', default: 'Fee'), fee.id])
+//                redirect fee
+//            }
+//            '*' { respond fee, [status: CREATED] }
+//        }
     }
 
     def edit(Fee fee) {

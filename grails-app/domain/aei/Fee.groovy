@@ -2,7 +2,9 @@ package aei
 
 import enums.FeeStatusEnum
 import enums.Months
+import groovy.transform.AutoClone
 
+@AutoClone
 class Fee {
     String id
     Inscription inscription
@@ -14,13 +16,16 @@ class Fee {
     Double extraCost
     FeeStatusEnum status = FeeStatusEnum.Iniciado
     Months month
+    String year
     Date firstExpiredDate
     Date secondExpiredDate
     Date dateCreated
     Date lastUpdated
 
     static constraints = {
-        amount(nullable: false)
+        amount(nullable: true)
+        inscription(nullable: true)
+        student(nullable: true)
         extraCost(nullable: true)
         inscriptionCost(nullable: true)
         testCost(nullable: true)
@@ -29,14 +34,7 @@ class Fee {
         firstExpiredDate(nullable: false)
         secondExpiredDate(nullable: false)
         status(nullable: false)
-
-        inscription(validator: {
-            return true
-        })
-
-        student(validator: {
-            return true
-        })
+        year(nullable: true)
     }
 
     static mapping = {

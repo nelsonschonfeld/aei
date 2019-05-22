@@ -16,6 +16,7 @@
                 }
             });
         }
+
         function getCourseDetails(idInscrip) {
             $.ajax({
                 type: 'POST',
@@ -23,9 +24,12 @@
                 data: {idInscrip: idInscrip},
                 success: function (resp) {
                     $("#courseAmount").val(resp.courseAmount);
+                    //inscrpcion
+                    $("#courseInscriptionCost").val(resp.courseInscriptionCost);
+                    $("#spanCourseInscriptionCost").text(" $ " + resp.courseInscriptionCost);
                     //examen
                     $("#courseTestCost").val(resp.courseTestCost);
-                    $("#spanCourseTestCost").text(" $ " + resp.coursePrintCost);
+                    $("#spanCourseTestCost").text(" $ " + resp.courseTestCost);
                     //costo de impresión
                     $("#coursePrintCost").val(resp.coursePrintCost);
                     $("#spanCoursePrintCost").text(" $ " + resp.coursePrintCost);
@@ -35,6 +39,10 @@
                     }
                     $("#spanCourseDays").text(resp.courseDays);
                     $("#spanCourseStatus").text(resp.courseStatus);
+                    $("#spanCourseTeacher").text(resp.courseTeacher);
+                    //año del curso
+                    $("#courseYear").val(resp.courseYear);
+                    $("#spanCourseYear").text(resp.courseYear);
                 }
             });
         }
@@ -57,6 +65,9 @@
     <g:if test="${flash.message}">
         <div class="message" role="status">${flash.message}</div>
     </g:if>
+    <g:if test="${flash.error}">
+        <div class="errors" role="alert">${flash.error}</div>
+    </g:if>
     <g:hasErrors bean="${this.fee}">
         <ul class="errors" role="alert">
             <g:eachError bean="${this.fee}" var="error">
@@ -75,10 +86,10 @@
                 <g:select
                         id="inscriptionsSelect"
                         name="inscriptionsSelect"
-                        from="${aei.Inscription.list().unique{courseIns -> courseIns.course}}"
+                        from="${aei.Inscription.list().unique { courseIns -> courseIns.course }}"
                         optionKey="id"
                         optionValue="courseId"
-                        noSelection="['': 'Cursos Inscriptos']"
+                        noSelection="['0': 'Cursos Inscriptos']"
                         onchange="getStudentForCourse(this.value);getCourseDetails(this.value)"/>
             </div>
 
@@ -88,37 +99,61 @@
                 </label>
                 <span id="studentsInscriptos"></span>
             </div>
+
             <div class="fieldcontain required">
                 <label>Cuota
                     <span class="required-indicator">*</span>
                 </label>
-                <g:textField name="courseAmount" id="courseAmount"></g:textField>
+                <g:field type="number" name="courseAmount" id="courseAmount"></g:field>
             </div>
+
+            <div class="fieldcontain required">
+                <label>Monto de Inscripción</label>
+                <g:checkBox name="checkCourseInscriptionCost" id="checkCourseInscriptionCost"/>
+                <span id="spanCourseInscriptionCost"></span>
+                <g:hiddenField name="courseInscriptionCost" id="courseInscriptionCost"/>
+            </div>
+
             <div class="fieldcontain required">
                 <label>Monto de Examen</label>
-                <g:checkBox name="checkCourseTestCost"/>
+                <g:checkBox name="checkCourseTestCost" id="checkCourseTestCost"/>
                 <span id="spanCourseTestCost"></span>
                 <g:hiddenField name="courseTestCost" id="courseTestCost"/>
             </div>
+
             <div class="fieldcontain required">
                 <label>Costo de Reimpresión</label>
-                <g:checkBox name="checkCoursePrintCost"/>
+                <g:checkBox name="checkCoursePrintCost" id="checkCoursePrintCost"/>
                 <span id="spanCoursePrintCost"></span>
                 <g:hiddenField name="coursePrintCost" id="coursePrintCost"/>
             </div>
+
             <div class="fieldcontain required">
-                <label>Horario</label>
+                <label>Horario de Cursado</label>
                 <span id="spanCourseSchedule"></span>
             </div>
+
             <div class="fieldcontain required">
                 <label>Días de Cursado</label>
                 <span id="spanCourseDays"></span>
             </div>
+
+            <div class="fieldcontain required">
+                <label>Profesor/a del Curso</label>
+                <span id="spanCourseTeacher"></span>
+            </div>
+
+            <div class="fieldcontain required">
+                <label>Año del Curso</label>
+                <span id="spanCourseYear"></span>
+                <g:hiddenField name="courseYear" id="courseYear"/>
+            </div>
+
             <div class="fieldcontain required">
                 <label>Estado del Curso</label>
                 <b><u><span id="spanCourseStatus"></span></u></b>
             </div>
-            <f:all bean="fee" except="inscription,student,amount,inscriptionCost,testCost,printCost,status"/>
+            <f:all bean="fee" except="inscription,student,amount,inscriptionCost,testCost,printCost,status,year"/>
         </fieldset>
         <fieldset class="buttons">
             <g:submitButton name="create" class="save"

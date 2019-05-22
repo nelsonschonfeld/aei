@@ -40,6 +40,6 @@ class Person {
     }
 
     String toString(){
-        return name + ' ' + surname + ' ' + dni
+        return surname + ' ' + name + ' ' + dni
     }
 }
