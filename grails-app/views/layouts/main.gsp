@@ -62,8 +62,8 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                            aria-expanded="false">Inscripciones <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="#">Crear</a></li>
-                            <li><a href="#">Listar</a></li>
+                            <li><a href="/inscription/index">Inscripciones</a></li>
+                            <li><a href="/inscription/create">Crear Inscripción</a></li>
                         </ul>
                     </li>
                     <li class="dropdown">

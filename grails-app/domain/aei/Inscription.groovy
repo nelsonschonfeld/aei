@@ -1,14 +1,23 @@
 package aei
 
 class Inscription {
-    Person student
+
+    String id
     Course course
-    Long discountAmount
-    String status
-    Boolean active
+    Person student
+    Integer discountAmount = 0
     Date dateCreated
     Date lastUpdated
 
     static constraints = {
+        course nullable:true
+        student nullable:true
+        discountAmount min:0, max:100
+        dateCreated display:false
+        lastUpdated display:false
+    }
+
+    static mapping = {
+        id generator: 'assigned'
     }
 }
