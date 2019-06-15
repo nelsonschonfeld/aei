@@ -19,6 +19,9 @@
             <g:if test="${flash.message}">
             <div class="message" role="status">${flash.message}</div>
             </g:if>
+            <g:if test="${flash.error}">
+                <div class="errors" role="alert">${flash.error}</div>
+            </g:if>
             <g:hasErrors bean="${this.fee}">
             <ul class="errors" role="alert">
                 <g:eachError bean="${this.fee}" var="error">
@@ -29,7 +32,17 @@
             <g:form resource="${this.fee}" method="PUT">
                 <g:hiddenField name="version" value="${this.fee?.version}" />
                 <fieldset class="form">
-                    <f:all bean="fee"/>
+                    <b> CURSO:</b>
+                    <f:display bean="fee" property="course"/>
+                    <b> ALUMNO:</b>
+                    <f:display bean="fee" property="student"/>
+                    <b> MES:</b>
+                    <f:display bean="fee" property="month"/>
+                    <b> MONTO TOTAL A PAGAR: </b>$
+                    <f:display bean="fee" property="amountFull"/>
+                    <b> ESTADO:</b>
+                    <f:display bean="fee" property="status"/>
+                    <f:all bean="fee" except="inscription, course,student,amount, amountFull, discountAmount,inscriptionCost,testCost,printCost,year, month, firstExpiredDate, secondExpiredDate, status, extraCost"/>
                 </fieldset>
                 <fieldset class="buttons">
                     <input class="save" type="submit" value="${message(code: 'default.button.update.label', default: 'Update')}" />

@@ -68,7 +68,7 @@
                     </li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                           aria-expanded="false">Cutoas <span class="caret"></span></a>
+                           aria-expanded="false">Cuotas <span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <li><a href="/fee/index">Cuotas</a></li>
                             <li><a href="/fee/create">Generar Cuotas</a></li>

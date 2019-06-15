@@ -1,6 +1,8 @@
 package aei
 
 import enums.CourseStatusEnum
+import enums.FeeStatusEnum
+import enums.Months
 import enums.PersonTypeEnum
 
 class BootStrap {
@@ -40,12 +42,22 @@ class BootStrap {
         course3.id="Segment 5 Adult 2019"
         course3.save(flush: flush, failOnError: true)
 
-        def inscription = new Inscription(student: person, course: course, discountAmount: 10, status: 'activo', active: true,dateCreated: new Date(), lastUpdated: new Date())
+        def inscription = new Inscription(student: person, course: course, discountAmount: 2, status: 'activo', active: true,dateCreated: new Date(), lastUpdated: new Date())
         inscription.save(flush: flush, failOnError: true)
         def inscription2 = new Inscription(student: person2, course: course, discountAmount: 10, status: 'activo', active: true,dateCreated: new Date(), lastUpdated: new Date())
         inscription2.save(flush: flush, failOnError: true)
-        def inscription3 = new Inscription(student: person2, course: course2, discountAmount: 10, status: 'activo', active: true,dateCreated: new Date(), lastUpdated: new Date())
+        def inscription3 = new Inscription(student: person2, course: course2, discountAmount: 12, status: 'activo', active: true,dateCreated: new Date(), lastUpdated: new Date())
         inscription3.save(flush: flush, failOnError: true)
+
+//        def fee = new Fee( inscription: inscription, course: course, student: person, amount: 100, discountAmount: 2, amountPaid: 98, amountFull: 98, inscriptionCost: 0, testCost: 0, printCost: 0, extraCost: 0, status: FeeStatusEnum.Parcial, month: Months.Abril, year: 2019, firstExpiredDate: new Date(), secondExpiredDate: new Date(), dateCreated: new Date(), lastUpdated: new Date())
+//        fee.id = "nelson_deuda"
+//        fee.save(flush: flush, failOnError: true)
+//        def fee2 = new Fee( inscription: inscription, course: course, student: person, amount: 100, discountAmount: 2, amountPaid: 30, amountFull: 68,  inscriptionCost: 0, testCost: 0, printCost: 0, extraCost: 0, status: FeeStatusEnum.Iniciado, month: Months.Mayo, year: 2019, firstExpiredDate: new Date(), secondExpiredDate: new Date(), dateCreated: new Date(), lastUpdated: new Date())
+//        fee2.id = "nelson_deuda2"
+//        fee2.save(flush: flush, failOnError: true)
+//        def fee3 = new Fee( inscription: inscription, course: course, student: person, amount: 80, discountAmount: 2, amountPaid: 30,amountFull: 68, inscriptionCost: 10, testCost: 5, printCost: 5, extraCost: 0, status: FeeStatusEnum.Pagado, month: Months.Mayo, year: 2019, firstExpiredDate: new Date(), secondExpiredDate: new Date(), dateCreated: new Date(), lastUpdated: new Date())
+//        fee3.id = "nelson_deuda3"
+//        fee3.save(flush: flush, failOnError: true)
     }
 
     def destroy = {

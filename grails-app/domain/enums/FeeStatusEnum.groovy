@@ -1,5 +1,5 @@
 package enums
 
 enum FeeStatusEnum {
-    Iniciado, Pagado
+    Iniciado, Parcial, Pagado
 }

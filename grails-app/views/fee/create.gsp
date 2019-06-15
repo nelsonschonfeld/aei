@@ -5,7 +5,7 @@
     <meta name="layout" content="main"/>
     <g:set var="entityName" value="${message(code: 'fee.label', default: 'Fee')}"/>
     <title><g:message code="default.create.label" args="[entityName]"/></title>
-    <script type="text/javascript">
+<g:javascript>
         function getStudentForCourse(idInscription) {
             $.ajax({
                 type: 'POST',
@@ -13,6 +13,26 @@
                 data: {idInscription: idInscription},
                 success: function (resp) {
                     $("#studentsInscriptos").html(resp);
+                }
+            });
+        }
+        function getDiscountByStudent(idInscription) {
+            $.ajax({
+                type: 'POST',
+                url: '/fee/findDiscountByStudent',
+                data: {idInscription: idInscription},
+                success: function (resp) {
+                    $("#discountsByStudent").html(resp);
+                }
+            });
+        }
+        function getOwedByStudent(idInscription) {
+            $.ajax({
+                type: 'POST',
+                url: '/fee/findAmountPaidByStudent',
+                data: {idInscription: idInscription},
+                success: function (resp) {
+                    $("#owedByStudent").html(resp);
                 }
             });
         }
@@ -46,9 +66,8 @@
                 }
             });
         }
-    </script>
+</g:javascript>
 </head>
-
 <body>
 <a href="#create-fee" class="skip" tabindex="-1"><g:message code="default.link.skip.label"
                                                             default="Skip to content&hellip;"/></a>
@@ -90,7 +109,7 @@
                         optionKey="id"
                         optionValue="courseId"
                         noSelection="['0': 'Cursos Inscriptos']"
-                        onchange="getStudentForCourse(this.value);getCourseDetails(this.value)"/>
+                        onchange="getStudentForCourse(this.value);getDiscountByStudent(this.value);getOwedByStudent(this.value);getCourseDetails(this.value)"/>
             </div>
 
             <div class="fieldcontain required">
@@ -99,6 +118,19 @@
                 </label>
                 <span id="studentsInscriptos"></span>
             </div>
+
+            <div class="fieldcontain required">
+                <label>Descuentos de los Alumnos
+                </label>
+                <span id="discountsByStudent"></span>
+            </div>
+
+            <div class="fieldcontain required">
+                <label>Deudas de los Alumnos
+                </label>
+                <span id="owedByStudent"></span>
+            </div>
+
 
             <div class="fieldcontain required">
                 <label>Cuota
@@ -153,7 +185,7 @@
                 <label>Estado del Curso</label>
                 <b><u><span id="spanCourseStatus"></span></u></b>
             </div>
-            <f:all bean="fee" except="inscription,student,amount,inscriptionCost,testCost,printCost,status,year"/>
+            <f:all bean="fee" except="inscription, course,student,amount,amountPaid, amountFull, discountAmount,inscriptionCost,testCost,printCost,status,year"/>
         </fieldset>
         <fieldset class="buttons">
             <g:submitButton name="create" class="save"
