@@ -5,7 +5,7 @@ class Inscription {
     String id
     Course course
     Person student
-    Integer discountAmount = 0
+    int discountAmount
     Date dateCreated
     Date lastUpdated
 
@@ -19,5 +19,6 @@ class Inscription {
 
     static mapping = {
         id generator: 'assigned'
+        discountAmount defaultValue: 0
     }
 }

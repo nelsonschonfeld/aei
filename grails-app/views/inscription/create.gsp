@@ -5,15 +5,20 @@
         <g:set var="entityName" value="${message(code: 'inscription.label', default: 'Inscription')}" />
         <title><g:message code="default.create.label.a" args="[entityName]" /></title>
         <script type="text/javascript">
-            function findPersons(query) {
-                $.ajax({
-                    type: 'GET',
-                    url: '/inscription/findPersons',
-                    data: {query: query},
-                    success: function (resp) {
-                        $("#students").html(resp);
-                    }
-                });
+            function findPersons() {
+
+                var query = $('#query').val();
+
+                if (query != '') {
+                    $.ajax({
+                        type: 'GET',
+                        url: '/inscription/findPersons',
+                        data: {query: query},
+                        success: function (resp) {
+                            $("#students").html(resp);
+                        }
+                    });
+                }
             }
         </script>
     </head>
@@ -52,7 +57,8 @@
                     <g:textField name="query"
                                  id="query"
                                  placeholder="Nombre,Apellido,DNI"
-                                 onchange="findPersons(this.value)"></g:textField>
+                    ></g:textField>
+                    <input type="button" id = "search" onclick="findPersons()" value="${message(code: 'default.button.search.label')}"/>
                 </div>
 
                 <div class="fieldcontain required">

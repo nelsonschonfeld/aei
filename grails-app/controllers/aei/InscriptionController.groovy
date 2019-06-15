@@ -81,8 +81,9 @@ class InscriptionController {
             inscription.id = inscription.course.id + "_" + inscription.student.toString()
             inscription.save flush:true
         }catch (Exception e){
+            transactionStatus.setRollbackOnly()
             flash.error = "El alumno ya está inscripto en este curso."
-            respond course, view:'create'
+            respond inscription, view:'create'
             return
         }
 
@@ -125,6 +126,7 @@ class InscriptionController {
     }
 
     @Transactional
+    @Secured(['ROLE_ADMIN'])
     def delete(Inscription inscription) {
 
         if (inscription == null) {
