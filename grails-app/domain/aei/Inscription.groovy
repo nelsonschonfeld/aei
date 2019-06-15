@@ -21,4 +21,8 @@ class Inscription {
         id generator: 'assigned'
         discountAmount defaultValue: 0
     }
+
+    String toString(){
+        return id
+    }
 }
