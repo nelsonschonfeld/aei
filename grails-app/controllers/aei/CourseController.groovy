@@ -52,7 +52,7 @@ class CourseController {
             course.id = course.name +'_'+ course.type +'_'+ course.year
             course.save flush:true
         }catch (Exception e){
-            flash.error = "El course con la conbinación del NOMBRE, TIPO y AÑO ya se registró. Verifícalo."
+            flash.error = "El course con la combinación del NOMBRE, TIPO y AÑO ya se registró. Verifícalo."
             respond course, view:'create'
             return
         }
