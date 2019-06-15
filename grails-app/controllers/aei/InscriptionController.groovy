@@ -15,7 +15,21 @@ class InscriptionController {
 
     def index(Integer max) {
         params.max = Math.min(max ?: 20, 100)
-        respond Inscription.list(params), model:[inscriptionCount: Inscription.count()]
+
+        def inscripcionList;
+        def course;
+
+        if (params.course) {
+            course = Course.findById(params.course)
+        }
+
+        if (course) {
+            inscripcionList = Inscription.findAllWhere(course: course)
+        } else {
+            inscripcionList = Inscription.list()
+        }
+
+        respond inscripcionList, model:[inscriptionCount: Inscription.count()]
     }
 
     def show(Inscription inscription) {
