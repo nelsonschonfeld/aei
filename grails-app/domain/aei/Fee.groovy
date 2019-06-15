@@ -8,12 +8,16 @@ import groovy.transform.AutoClone
 class Fee {
     String id
     Inscription inscription
+    Course course
     Person student
     Double amount
-    Double inscriptionCost
-    Double testCost
-    Long printCost
-    Double extraCost
+    Double discountAmount = 0
+    Double amountPaid = 0
+    Double amountFull
+    Double inscriptionCost = 0
+    Double testCost = 0
+    Double printCost = 0
+    Double extraCost = 0
     FeeStatusEnum status = FeeStatusEnum.Iniciado
     Months month
     String year
@@ -24,8 +28,12 @@ class Fee {
 
     static constraints = {
         amount(nullable: true)
+        discountAmount(nullable: true)
+        amountPaid(nullable: true)
+        amountFull(nullable: true)
         inscription(nullable: true)
         student(nullable: true)
+        course(nullable: true)
         extraCost(nullable: true)
         inscriptionCost(nullable: true)
         testCost(nullable: true)

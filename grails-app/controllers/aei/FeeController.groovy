@@ -1,5 +1,6 @@
 package aei
 
+import enums.FeeStatusEnum
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
 
@@ -14,21 +15,21 @@ class FeeController {
 
     def getInscription(Integer max) {
         def courseList = Course.createCriteria().list(params) {
-            if(params.query){
+            if (params.query) {
                 or {
-                    and {ilike('name', "%${params.query}%")}
-                    and {ilike('type', "%${params.query}%")}
-                    and {ilike('year', "%${params.query}%")}
-                    and {ilike('teacher', "%${params.query}%")}
+                    and { ilike('name', "%${params.query}%") }
+                    and { ilike('type', "%${params.query}%") }
+                    and { ilike('year', "%${params.query}%") }
+                    and { ilike('teacher', "%${params.query}%") }
                 }
             }
         }
-        respond courseList, view:'create', model:[feeCount: Course.count()]
+        respond courseList, view: 'create', model: [feeCount: Course.count()]
     }
 
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
-        respond Fee.list(params), model:[feeCount: Fee.count()]
+        respond Fee.list(params), model: [feeCount: Fee.count()]
     }
 
     def show(Fee fee) {
@@ -39,15 +40,66 @@ class FeeController {
         respond new Fee(params)
     }
 
-    def findStudentForCourse(){
+    def findStudentForCourse() {
         def inscriptionCourse = Inscription.read(params.idInscription).course
         def studentsList = Inscription.findAllWhere(course: inscriptionCourse).student
-        render g.select(id:'studentsInscriptos', name:'studentsInscriptos', multiple:"multiple",
-                from:studentsList, optionKey:'dni'
+        render g.select(id: 'studentsInscriptos', name: 'studentsInscriptos', multiple: "multiple",
+                from: studentsList, optionKey: 'dni'
         )
     }
 
-    def findCourseDetail(){
+    def findDiscountByStudent() {
+        def inscriptionCourse = Inscription.read(params.idInscription).course
+        def studentsList = Inscription.findAllWhere(course: inscriptionCourse).student
+        def discountStudentsList = []
+        studentsList.each { it ->
+            def discount = Inscription.findWhere(student: it, course: inscriptionCourse).discountAmount
+            discountStudentsList << it.toString() + ", Descuento: " + discount + "%"
+        }
+        //render ([discountStudentsList:discountStudentsList] as JSON)
+
+        if (discountStudentsList.size() > 0) {
+            render g.select(id: 'discountStudentsList', name: 'discountStudentsList', multiple: "multiple",
+                    from: discountStudentsList
+            )
+        } else {
+            render g.select(id: 'discountStudentsList', name: 'discountStudentsList', multiple: "multiple",
+                    from: ["Los alumnos No tienen descuentos"]
+            )
+        }
+
+    }
+
+    def findAmountPaidByStudent() {
+        def inscriptionCourse = Inscription.read(params.idInscription).course
+        def studentsList = Inscription.findAllWhere(course: inscriptionCourse).student
+        def owedStudentsList = []
+        studentsList.each { it ->
+            def allFee = Fee.findAllWhere(student: it, course: inscriptionCourse)
+            def amountPaid = 0
+            allFee.each { fee ->
+                if (fee.status == FeeStatusEnum.Iniciado || fee.status == FeeStatusEnum.Parcial) {
+                    amountPaid = amountPaid + (fee.amountFull - fee.amountPaid)
+                }
+            }
+            if (amountPaid > 0) {
+                owedStudentsList << it.toString() + ", Deuda: " + amountPaid
+            }
+        }
+        //render ([owedStudentsList:owedStudentsList] as JSON)
+        if (owedStudentsList.size() > 0) {
+            render g.select(id: 'owedStudentsList', name: 'owedStudentsList', multiple: "multiple",
+                    from: owedStudentsList
+            )
+        } else {
+            render g.select(id: 'owedStudentsList', name: 'owedStudentsList', multiple: "multiple",
+                    from: ["Los alumnos No tienen deudas"]
+            )
+        }
+
+    }
+
+    def findCourseDetail() {
         def inscriptionCourse = Inscription.read(params.idInscrip).course
         def courseDetail = Course.get(inscriptionCourse.id)
         List<String> stringList = new ArrayList<String>();
@@ -58,7 +110,7 @@ class FeeController {
         !courseDetail.friday ?: stringList.add("Viernes")
         !courseDetail.saturday ?: stringList.add("Sabado")
         def days = stringList.join(" - ")
-        render ([courseAmount:courseDetail.amount, courseInscriptionCost:courseDetail.inscriptionCost, courseTestCost:courseDetail.testCost, coursePrintCost:courseDetail.printCost, courseSchedule:courseDetail.schedule, courseDays: days, courseStatus:courseDetail.status.toString(), courseTeacher:courseDetail.teacher, courseYear:courseDetail.year] as JSON)
+        render([courseAmount: courseDetail.amount, courseInscriptionCost: courseDetail.inscriptionCost, courseTestCost: courseDetail.testCost, coursePrintCost: courseDetail.printCost, courseSchedule: courseDetail.schedule, courseDays: days, courseStatus: courseDetail.status.toString(), courseTeacher: courseDetail.teacher, courseYear: courseDetail.year] as JSON)
     }
 
     @Transactional
@@ -75,7 +127,7 @@ class FeeController {
             return
         }
         //validacion alumnos
-        if (params.studentsInscriptos == null || params.inscriptionsSelect == [] || params.inscriptionsSelect.size() == 0) {
+        if (params.studentsInscriptos == null || params.studentsInscriptos == [] || params.studentsInscriptos.size() == 0) {
             flash.error = "Debe seleccionar el o los Alumnos"
             respond fee, view: 'create'
             return
@@ -90,14 +142,35 @@ class FeeController {
         for (String student : Eval.me(params.studentsInscriptos.toString())) {
             def newFee = fee.clone()
             try {
-                newFee.id = params.inscriptionsSelect + '_' + student + '_' + newFee.month
-                newFee.inscription = Inscription.get(params.inscriptionsSelect)
-                newFee.student = Person.findByDni(student)
+                newFee.id = params.inscriptionsSelect + ' ' + student + ' ' + newFee.month
+                def inscriptionObject = Inscription.get(params.inscriptionsSelect)
+                newFee.inscription = inscriptionObject
+                def studentObject = Person.findByDni(student)
+                newFee.student = studentObject
                 newFee.amount = Double.parseDouble(params.courseAmount)
-                newFee.inscriptionCost = params.checkCourseInscriptionCost ? Double.parseDouble(params.courseInscriptionCost) : null
-                newFee.testCost = params.checkCourseTestCost ? Double.parseDouble(params.courseTestCost) : null
-                newFee.printCost = params.checkCoursePrintCost ? Double.parseDouble(params.coursePrintCost) : null
+                newFee.inscriptionCost = params.checkCourseInscriptionCost ? Double.parseDouble(params.courseInscriptionCost) : 0
+                newFee.testCost = params.checkCourseTestCost ? Double.parseDouble(params.courseTestCost) : 0
+                newFee.printCost = params.checkCoursePrintCost ? Double.parseDouble(params.coursePrintCost) : 0
                 newFee.year = params.courseYear
+                newFee.course = inscriptionObject.course
+                newFee.discountAmount = Inscription.findWhere(student: studentObject, course: inscriptionObject.course).discountAmount
+
+                //busco las deudas
+                def studentsList = Inscription.findAllWhere(course: inscriptionObject.course, student: studentObject).student
+                def amountToPaid = 0
+                studentsList.each { it ->
+                    def allFee = Fee.findAllWhere(student: it, course: inscriptionObject.course)
+                    allFee.each { prevFee ->
+                        if (prevFee.status == FeeStatusEnum.Iniciado || prevFee.status == FeeStatusEnum.Parcial) {
+                            amountToPaid = amountToPaid + (prevFee.amountFull - prevFee.amountPaid)
+                        }
+                    }
+                }
+
+                def totalToPaid = (newFee.amount + newFee.inscriptionCost + newFee.printCost + (newFee.testCost / 2))
+                def totalToPaidWithDiscount = (totalToPaid * newFee.discountAmount) / 100
+
+                newFee.amountFull = newFee.extraCost + amountToPaid + totalToPaid - totalToPaidWithDiscount
 
                 if (newFee.hasErrors()) {
                     transactionStatus.setRollbackOnly()
@@ -126,10 +199,12 @@ class FeeController {
 //        }
     }
 
+    @Secured(['ROLE_ADMIN'])
     def edit(Fee fee) {
         respond fee
     }
 
+    @Secured(['ROLE_ADMIN'])
     @Transactional
     def update(Fee fee) {
         if (fee == null) {
@@ -140,21 +215,27 @@ class FeeController {
 
         if (fee.hasErrors()) {
             transactionStatus.setRollbackOnly()
-            respond fee.errors, view:'edit'
+            respond fee.errors, view: 'edit'
             return
         }
 
-        fee.save flush:true
+        if (fee.amountPaid == fee.amountFull) {
+            fee.status = FeeStatusEnum.Pagado
+        } else {
+            fee.status = FeeStatusEnum.Parcial
+        }
+        fee.save flush: true
 
         request.withFormat {
             form multipartForm {
                 flash.message = message(code: 'default.updated.message', args: [message(code: 'fee.label', default: 'Fee'), fee.id])
                 redirect fee
             }
-            '*'{ respond fee, [status: OK] }
+            '*' { respond fee, [status: OK] }
         }
     }
 
+    @Secured(['ROLE_ADMIN'])
     @Transactional
     def delete(Fee fee) {
 
@@ -164,14 +245,14 @@ class FeeController {
             return
         }
 
-        fee.delete flush:true
+        fee.delete flush: true
 
         request.withFormat {
             form multipartForm {
                 flash.message = message(code: 'default.deleted.message', args: [message(code: 'fee.label', default: 'Fee'), fee.id])
-                redirect action:"index", method:"GET"
+                redirect action: "index", method: "GET"
             }
-            '*'{ render status: NO_CONTENT }
+            '*' { render status: NO_CONTENT }
         }
     }
 
@@ -181,7 +262,7 @@ class FeeController {
                 flash.message = message(code: 'default.not.found.message', args: [message(code: 'fee.label', default: 'Fee'), params.id])
                 redirect action: "index", method: "GET"
             }
-            '*'{ render status: NOT_FOUND }
+            '*' { render status: NOT_FOUND }
         }
     }
 }

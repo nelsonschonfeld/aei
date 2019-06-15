@@ -1,6 +1,8 @@
 package aei
 
 import enums.CourseStatusEnum
+import enums.FeeStatusEnum
+import enums.Months
 import enums.PersonTypeEnum
 
 class BootStrap {
