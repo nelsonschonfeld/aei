@@ -54,7 +54,9 @@ class FeeController {
         def discountStudentsList = []
         studentsList.each { it ->
             def discount = Inscription.findWhere(student: it, course: inscriptionCourse).discountAmount
-            discountStudentsList << it.toString() + ", Descuento: " + discount + "%"
+            if (discount > 0) {
+                discountStudentsList << it.toString() + ", Descuento: " + discount + "%"
+            }
         }
         //render ([discountStudentsList:discountStudentsList] as JSON)
 
@@ -83,7 +85,7 @@ class FeeController {
                 }
             }
             if (amountPaid > 0) {
-                owedStudentsList << it.toString() + ", Deuda: " + amountPaid
+                owedStudentsList << it.toString() + ", Deuda: \$ " + amountPaid
             }
         }
         //render ([owedStudentsList:owedStudentsList] as JSON)
@@ -152,8 +154,11 @@ class FeeController {
                 newFee.testCost = params.checkCourseTestCost ? Double.parseDouble(params.courseTestCost) : 0
                 newFee.printCost = params.checkCoursePrintCost ? Double.parseDouble(params.coursePrintCost) : 0
                 newFee.year = params.courseYear
+                def course = Course.read(inscriptionObject.course.id)
                 newFee.course = inscriptionObject.course
                 newFee.discountAmount = Inscription.findWhere(student: studentObject, course: inscriptionObject.course).discountAmount
+                newFee.amountFirstExpiredDate = course.firstDueCost
+                newFee.amountSecondExpiredDate = course.secondDueCost
 
                 //busco las deudas
                 def studentsList = Inscription.findAllWhere(course: inscriptionObject.course, student: studentObject).student
@@ -188,7 +193,7 @@ class FeeController {
         }
 
         flash.message = "La/s Cuota/s fueron generadas correctamente."
-        respond new Fee(params), view: 'create'
+        redirect action: "index", method: "GET"
 
 //        request.withFormat {
 //            form multipartForm {
