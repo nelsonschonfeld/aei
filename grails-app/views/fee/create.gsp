@@ -5,6 +5,9 @@
     <meta name="layout" content="main"/>
     <g:set var="entityName" value="${message(code: 'fee.label', default: 'Fee')}"/>
     <title><g:message code="default.create.label" args="[entityName]"/></title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.min.js"></script>
 <g:javascript>
         function getStudentForCourse(idInscription) {
             $.ajax({
@@ -119,6 +122,7 @@
                     <span class="required-indicator">*</span>
                 </label>
                 <g:select
+                        class="select-basic-single"
                         id="inscriptionsSelect"
                         name="inscriptionsSelect"
                         from="${aei.Inscription.list().unique { courseIns -> courseIns.course }}"
@@ -196,5 +200,8 @@
         </fieldset>
     </g:form>
 </div>
+<script type="text/javascript">
+    $(".select-basic-single").select2();
+</script>
 </body>
 </html>
