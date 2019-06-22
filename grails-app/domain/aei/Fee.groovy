@@ -22,27 +22,31 @@ class Fee {
     Months month
     String year
     Date firstExpiredDate
+    Double amountFirstExpiredDate
     Date secondExpiredDate
+    Double amountSecondExpiredDate
     Date dateCreated
     Date lastUpdated
 
     static constraints = {
-        amount(nullable: true)
-        discountAmount(nullable: true)
-        amountPaid(nullable: true)
-        amountFull(nullable: true)
         inscription(nullable: true)
-        student(nullable: true)
         course(nullable: true)
+        student(nullable: true)
+        month(nullable: false)
+        year(nullable: true)
+        discountAmount(nullable: true)
+        amount(nullable: true)
+        amountPaid(nullable: true)
         extraCost(nullable: true)
         inscriptionCost(nullable: true)
         testCost(nullable: true)
         printCost(nullable: true)
-        month(nullable: false)
+        amountFull(nullable: true)
+        amountFirstExpiredDate(nullable: true)
         firstExpiredDate(nullable: false)
+        amountSecondExpiredDate(nullable: true)
         secondExpiredDate(nullable: false)
         status(nullable: false)
-        year(nullable: true)
     }
 
     static mapping = {

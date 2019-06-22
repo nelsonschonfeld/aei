@@ -98,6 +98,22 @@
 
     <g:form action="save">
         <fieldset class="form">
+            <fieldset class="embedded " style="float: right;">
+                <legend>Información de Descuentos y Deuda</legend>
+
+                <div class="fieldcontain required">
+                    <label>Descuentos de los Alumnos (%)
+                    </label>
+                    <span id="discountsByStudent"></span>
+                </div>
+
+                <div class="fieldcontain required">
+                    <label>Deudas de los Alumnos ($)
+                    </label>
+                    <span id="owedByStudent"></span>
+                </div>
+
+            </fieldset>
             <div class="fieldcontain required">
                 <label>Cursos Inscriptos
                     <span class="required-indicator">*</span>
@@ -120,41 +136,28 @@
             </div>
 
             <div class="fieldcontain required">
-                <label>Descuentos de los Alumnos
-                </label>
-                <span id="discountsByStudent"></span>
-            </div>
-
-            <div class="fieldcontain required">
-                <label>Deudas de los Alumnos
-                </label>
-                <span id="owedByStudent"></span>
-            </div>
-
-
-            <div class="fieldcontain required">
-                <label>Cuota
+                <label>Cuota ($)
                     <span class="required-indicator">*</span>
                 </label>
                 <g:field type="number" name="courseAmount" id="courseAmount"></g:field>
             </div>
 
             <div class="fieldcontain required">
-                <label>Monto de Inscripción</label>
+                <label>Monto de Inscripción ($)</label>
                 <g:checkBox name="checkCourseInscriptionCost" id="checkCourseInscriptionCost"/>
                 <span id="spanCourseInscriptionCost"></span>
                 <g:hiddenField name="courseInscriptionCost" id="courseInscriptionCost"/>
             </div>
 
             <div class="fieldcontain required">
-                <label>Monto de Examen</label>
+                <label>Monto de Examen ($)</label>
                 <g:checkBox name="checkCourseTestCost" id="checkCourseTestCost"/>
                 <span id="spanCourseTestCost"></span>
                 <g:hiddenField name="courseTestCost" id="courseTestCost"/>
             </div>
 
             <div class="fieldcontain required">
-                <label>Costo de Reimpresión</label>
+                <label>Costo de Reimpresión ($)</label>
                 <g:checkBox name="checkCoursePrintCost" id="checkCoursePrintCost"/>
                 <span id="spanCoursePrintCost"></span>
                 <g:hiddenField name="coursePrintCost" id="coursePrintCost"/>
@@ -185,7 +188,7 @@
                 <label>Estado del Curso</label>
                 <b><u><span id="spanCourseStatus"></span></u></b>
             </div>
-            <f:all bean="fee" except="inscription, course,student,amount,amountPaid, amountFull, discountAmount,inscriptionCost,testCost,printCost,status,year"/>
+            <f:all bean="fee" except="inscription, course,student,amount,amountPaid, amountFull, discountAmount,inscriptionCost,testCost,printCost,status,year, amountFirstExpiredDate, amountSecondExpiredDate"/>
         </fieldset>
         <fieldset class="buttons">
             <g:submitButton name="create" class="save"
