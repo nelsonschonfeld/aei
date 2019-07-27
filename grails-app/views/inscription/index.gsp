@@ -2,9 +2,13 @@
 <html>
     <head>
         <meta name="layout" content="main" />
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
         <g:set var="entityName" value="${message(code: 'inscription.label', default: 'Inscription')}" />
         <title><g:message code="default.list.label" args="[entityName]" /></title>
     </head>
+
     <body>
         <a href="#list-inscription" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
         <div class="nav" role="navigation">
@@ -24,13 +28,23 @@
                 <div class="fieldcontain">
                     <label>Curso</label>
                     <g:select
+                            class="searchSelect"
                             id="course"
                             name="course"
-                            from="${aei.Course.list()}"
+                            from="${aei.Course.findAll{ year >= Calendar.getInstance().get(Calendar.YEAR).minus(1) }}"
                             optionKey="id"
                             optionValue="id"
+                            noSelection="['':'Selecciona un curso']"
                     />
-                   <g:submitButton name="search" class="save" value="${message(code: 'default.button.search.label', default: 'Buscar')}" />
+                    <g:select class="searchSelect"
+                        id="student"
+                        name="student"
+                        from="${aei.Person.list()}"
+                        optionKey="id"
+                        optionValue="${name}"
+                        noSelection="['':'Selecciona un estudiante']"
+                    />
+                   <g:submitButton name="search" class="save" style="border-radius: 4px;" value="${message(code: 'default.button.search.label', default: 'Buscar')}" />
                 </div>
             </g:form>
             </fieldset>
@@ -44,5 +58,10 @@
             </g:if>
 
             </div>
+
+            <script type="text/javascript">
+                $(".searchSelect").select2();
+            </script>
+
         </body>
     </html>

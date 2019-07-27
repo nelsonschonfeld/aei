@@ -3,7 +3,7 @@
     <head>
         <meta name="layout" content="main" />
         <g:set var="entityName" value="${message(code: 'inscription.label', default: 'Inscription')}" />
-        <title><g:message code="default.create.label.a" args="[entityName]" /></title>
+        <title><g:message code="default.create.label" args="[entityName]" /></title>
         <script type="text/javascript">
             function findPersons() {
 
