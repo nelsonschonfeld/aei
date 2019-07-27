@@ -1,6 +1,5 @@
 package aei
 
-import aei.Inscription
 import grails.converters.JSON
 import org.springframework.security.access.annotation.Secured
 

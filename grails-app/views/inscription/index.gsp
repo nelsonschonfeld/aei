@@ -26,7 +26,7 @@
             <fieldset class="form">
             <g:form action="index" method="GET">
                 <div class="fieldcontain">
-                    <label>Curso</label>
+                    <label>Filtros</label>
                     <g:select
                             class="searchSelect"
                             id="course"

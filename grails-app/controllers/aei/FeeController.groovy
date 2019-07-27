@@ -29,7 +29,37 @@ class FeeController {
 
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
-        respond Fee.list(params), model: [feeCount: Fee.count()]
+
+        def course
+        def student
+        def feeList
+
+        if (!params.student && !params.course) {
+            feeList = Fee.list()
+        } else {
+
+            if (params.course) {
+                course = Course.findById(params.course)
+            }
+
+            if (params.student) {
+                student = Person.findById(params.student)
+            }
+
+            if (course && student) {
+                feeList = Fee.findAllWhere(course: course, student: student)
+            } else if (student) {
+                feeList = Fee.findAllWhere(student: student)
+            } else {
+                feeList = Fee.findAllWhere(course: course)
+            }
+        }
+
+        if (params.status) {
+            feeList = feeList.findAll {it.status?.value == params.status}
+        }
+
+        respond feeList, model:[feeCount: Fee.count()]
     }
 
     def show(Fee fee) {
