@@ -31,6 +31,9 @@ class BootStrap {
         def person2 = new Person(name:'Nelson', surname:'Schonfeld',dni:'34867234',email:'schonfeld@gmail.com',
                 address:'BS AS 1345',cellphone:'155567890',birthDate:new Date(),type:PersonTypeEnum.Estudiante)
         person2.save(flush: flush, failOnError: failOnError)
+        def person3 = new Person(name:'Ayelen', surname:'Cian',dni:'33444555',email:'ayelen@gmail.com',
+                address:'BS AS 1345',cellphone:'155567890',birthDate:new Date(),type:PersonTypeEnum.Estudiante)
+        person3.save(flush: flush, failOnError: failOnError)
 
         def course = new Course(name: 'Segment 5', type: 'Junior', year: 2019, teacher: 'Mercedez', amount: 1200, firstDueCost: 1300, secondDueCost: 1400, inscriptionCost: 500, testCost: 800, printCost: 25, monday: true, wednesday: true, schedule: "19:30", status: CourseStatusEnum.Abierto, dateCreated: new Date(), lastUpdated: new Date())
         course.id="Segment 5 Junior 2019"

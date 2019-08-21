@@ -1,5 +1,15 @@
 package enums
 
 enum FeeStatusEnum {
-    Iniciado, Parcial, Pagado
+
+    Iniciado ("Iniciado"),
+    Parcial ("Parcial"),
+    Pagado ("Pagado"),
+
+    final String value
+    FeeStatusEnum(String value){ this.value = value }
+
+    String toString(){ value }
+    String getKey() { name() }
+
 }

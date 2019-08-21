@@ -1,6 +1,5 @@
 package aei
 
-import aei.Inscription
 import grails.converters.JSON
 import org.springframework.security.access.annotation.Secured
 
@@ -16,17 +15,29 @@ class InscriptionController {
     def index(Integer max) {
         params.max = Math.min(max ?: 20, 100)
 
-        def inscripcionList;
-        def course;
+        def course
+        def student
+        def inscripcionList
 
-        if (params.course) {
-            course = Course.findById(params.course)
-        }
-
-        if (course) {
-            inscripcionList = Inscription.findAllWhere(course: course)
-        } else {
+        if (!params.student && !params.course) {
             inscripcionList = Inscription.list()
+        } else {
+
+            if (params.course) {
+                course = Course.findById(params.course)
+            }
+
+            if (params.student) {
+                student = Person.findById(params.student)
+            }
+
+            if (course && student) {
+                inscripcionList = Inscription.findAllWhere(course: course, student: student)
+            } else if (student) {
+                inscripcionList = Inscription.findAllWhere(student: student)
+            } else {
+                inscripcionList = Inscription.findAllWhere(course: course)
+            }
         }
 
         respond inscripcionList, model:[inscriptionCount: Inscription.count()]
