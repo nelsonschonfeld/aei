@@ -43,7 +43,7 @@ class BootStrap {
         course2.save(flush: flush, failOnError: true)
         def course3 = new Course(name: 'Segment 5', type: 'Adult', year: 2019, teacher: 'Mercedez', amount: 1200, firstDueCost: 1300, secondDueCost: 1400, inscriptionCost: 500, testCost: 800, printCost: 25, monday: true, wednesday: true, schedule: "20:30", status: CourseStatusEnum.Abierto, dateCreated: new Date(), lastUpdated: new Date())
         course3.id="Segment 5 Adult 2019"
-        course3.save(flush: flush, failOnError: true)
+        course3.save(flush: flush, failOnError: true) //test
 
        /* def inscription = new Inscription(student: person, course: course, discountAmount: 10, status: 'activo', active: true,dateCreated: new Date(), lastUpdated: new Date())
         inscription.save(flush: flush, failOnError: true)
