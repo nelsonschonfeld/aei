@@ -145,6 +145,11 @@ class FeeController {
             def newFee = fee.clone()
             try {
                 newFee.id = params.inscriptionsSelect + ' ' + student + ' ' + newFee.month
+                double random =  Math.random()
+                String doubleAsString = String.valueOf(random);
+                int indexOfDecimal = doubleAsString.indexOf(".");
+                def identificationCode = doubleAsString.substring(indexOfDecimal + 1).toBigInteger()
+                newFee.identificationCode = identificationCode
                 def inscriptionObject = Inscription.get(params.inscriptionsSelect)
                 newFee.inscription = inscriptionObject
                 def studentObject = Person.findByDni(student)
