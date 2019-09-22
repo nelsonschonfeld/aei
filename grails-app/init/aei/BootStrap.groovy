@@ -45,9 +45,10 @@ class BootStrap {
         course3.id="Segment 5 Adult 2019"
         course3.save(flush: flush, failOnError: true)
 
-       /* def inscription = new Inscription(student: person, course: course, discountAmount: 10, status: 'activo', active: true,dateCreated: new Date(), lastUpdated: new Date())
+        def inscription = new Inscription(student: person, course: course, discountAmount: 10 ,dateCreated: new Date(), lastUpdated: new Date())
+        inscription.id = "123"
         inscription.save(flush: flush, failOnError: true)
-        def inscription2 = new Inscription(student: person2, course: course, discountAmount: 10, status: 'activo', active: true,dateCreated: new Date(), lastUpdated: new Date())
+        /*def inscription2 = new Inscription(student: person2, course: course, discountAmount: 10, status: 'activo', active: true,dateCreated: new Date(), lastUpdated: new Date())
         inscription2.save(flush: flush, failOnError: true)
         def inscription3 = new Inscription(student: person2, course: course2, discountAmount: 10, status: 'activo', active: true,dateCreated: new Date(), lastUpdated: new Date())
         inscription3.save(flush: flush, failOnError: true)*/

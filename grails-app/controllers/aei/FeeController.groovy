@@ -175,6 +175,11 @@ class FeeController {
             def newFee = fee.clone()
             try {
                 newFee.id = params.inscriptionsSelect + ' ' + student + ' ' + newFee.month
+                double random =  Math.random()
+                String doubleAsString = String.valueOf(random);
+                int indexOfDecimal = doubleAsString.indexOf(".");
+                def identificationCode = doubleAsString.substring(indexOfDecimal + 1).toBigInteger()
+                newFee.identificationCode = identificationCode
                 def inscriptionObject = Inscription.get(params.inscriptionsSelect)
                 newFee.inscription = inscriptionObject
                 def studentObject = Person.findByDni(student)
@@ -187,8 +192,6 @@ class FeeController {
                 def course = Course.read(inscriptionObject.course.id)
                 newFee.course = inscriptionObject.course
                 newFee.discountAmount = Inscription.findWhere(student: studentObject, course: inscriptionObject.course).discountAmount
-                newFee.amountFirstExpiredDate = course.firstDueCost
-                newFee.amountSecondExpiredDate = course.secondDueCost
 
                 //busco las deudas
                 def studentsList = Inscription.findAllWhere(course: inscriptionObject.course, student: studentObject).student
@@ -197,15 +200,26 @@ class FeeController {
                     def allFee = Fee.findAllWhere(student: it, course: inscriptionObject.course)
                     allFee.each { prevFee ->
                         if (prevFee.status == FeeStatusEnum.Iniciado || prevFee.status == FeeStatusEnum.Parcial) {
+                            //buscamos el monto adeudado de las cuotas pasadas
                             amountToPaid = amountToPaid + (prevFee.amountFull - prevFee.amountPaid)
+                            //actualizamos el estado de la cuota a Trasladado ya que se pasa a la próxima cuota
+                            prevFee.status = FeeStatusEnum.Trasladado
+                            prevFee.save flush: true
                         }
                     }
                 }
 
                 def totalToPaid = (newFee.amount + newFee.inscriptionCost + newFee.printCost + (newFee.testCost / 2))
                 def totalToPaidWithDiscount = (totalToPaid * newFee.discountAmount) / 100
-
                 newFee.amountFull = newFee.extraCost + amountToPaid + totalToPaid - totalToPaidWithDiscount
+
+                def totalToPaidFirst = (course.firstDueCost + newFee.inscriptionCost + newFee.printCost + (newFee.testCost / 2))
+                def totalToPaidWithDiscountFirst = (totalToPaidFirst * newFee.discountAmount) / 100
+                newFee.amountFirstExpiredDate = newFee.extraCost + amountToPaid + totalToPaidFirst - totalToPaidWithDiscountFirst
+
+                def totalToPaidSecond = (course.secondDueCost + newFee.inscriptionCost + newFee.printCost + (newFee.testCost / 2))
+                def totalToPaidWithDiscountSecond = (totalToPaidSecond * newFee.discountAmount) / 100
+                newFee.amountSecondExpiredDate = newFee.extraCost + amountToPaid + totalToPaidSecond - totalToPaidWithDiscountSecond
 
                 if (newFee.hasErrors()) {
                     transactionStatus.setRollbackOnly()

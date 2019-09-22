@@ -55,13 +55,11 @@
                 </g:form>
             </fieldset>
 
-            <f:table collection="${feeList}" properties="['id','course','student','amount','amountPaid','amountFull','status','month','year','dateCreated']"/>
+            <f:table collection="${feeList}" properties="['identificationCode','course','student','amount','amountPaid','amountFull','status','month','year','dateCreated']"/>
 
-            <g:if test="${feeCount > 20}">
                 <div class="pagination">
                     <g:paginate total="${feeCount ?: 0}" />
                 </div>
-            </g:if>
         </div>
     </body>
 </html>

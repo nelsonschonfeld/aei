@@ -7,6 +7,7 @@ import groovy.transform.AutoClone
 @AutoClone
 class Fee {
     String id
+    String identificationCode
     Inscription inscription
     Course course
     Person student
@@ -29,6 +30,8 @@ class Fee {
     Date lastUpdated
 
     static constraints = {
+        identificationCode(nullable: true)
+        identificationCode(display: false)
         inscription(nullable: true)
         course(nullable: true)
         student(nullable: true)
@@ -51,5 +54,9 @@ class Fee {
 
     static mapping = {
         id generator: 'assigned'
+    }
+
+    String toString(){
+        return id
     }
 }
