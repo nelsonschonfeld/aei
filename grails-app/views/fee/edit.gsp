@@ -42,7 +42,7 @@
                     <f:display bean="fee" property="amountFull"/>
                     <b> ESTADO:</b>
                     <f:display bean="fee" property="status"/>
-                    <f:all bean="fee" except="inscription, course,student,amount, amountFull, discountAmount,inscriptionCost,testCost,printCost,year, month, firstExpiredDate, secondExpiredDate, status, extraCost, amountFirstExpiredDate, amountSecondExpiredDate"/>
+                    <f:all bean="fee" except="inscription, course,student,amount,amountPaid, amountFull, discountAmount,inscriptionCost,testCost,printCost, status, extraCost"/>
                 </fieldset>
                 <fieldset class="buttons">
                     <input class="save" type="submit" value="${message(code: 'default.button.update.label', default: 'Update')}" />
