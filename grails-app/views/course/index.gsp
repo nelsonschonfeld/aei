@@ -33,11 +33,9 @@
     </fieldset>
     <f:table collection="${courseList}" properties="['id','name','type','year','teacher','amount','schedule','monday','thursday','wednesday','tuesday','friday','saturday','status']"/>
 
-    <g:if test="${courseCount > 20}">
         <div class="pagination">
             <g:paginate total="${courseCount ?: 0}"/>
         </div>
-    </g:if>
 </div>
 </body>
 </html>

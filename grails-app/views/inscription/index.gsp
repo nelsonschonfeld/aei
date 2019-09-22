@@ -51,11 +51,11 @@
 
             <f:table collection="${inscriptionList}" properties="['id','course','student','discountAmount']"/>
 
-            <g:if test="${inscriptionCount > 20}">
+            %{--<g:if test="${inscriptionCount > 20}">--}%
                 <div class="pagination">
                     <g:paginate total="${inscriptionCount ?: 0}" />
                 </div>
-            </g:if>
+            %{--</g:if>--}%
 
             </div>
 

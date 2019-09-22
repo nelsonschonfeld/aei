@@ -20,11 +20,9 @@
             </g:if>
             <f:table collection="${userList}" properties="['fullName','username', 'enabled', 'accountExpired', 'accountLocked', 'passwordExpired']"/>
 
-            <g:if test="${userCount > 20}">
                 <div class="pagination">
                     <g:paginate total="${userCount ?: 0}" />
                 </div>
-            </g:if>
         </div>
     </body>
 </html>

@@ -28,11 +28,9 @@
             </fieldset>
             <f:table collection="${personList}" />
 
-            <g:if test="${personCount > 20}">
                 <div class="pagination">
                     <g:paginate total="${personCount ?: 0}" />
                 </div>
-            </g:if>
         </div>
     </body>
 </html>
