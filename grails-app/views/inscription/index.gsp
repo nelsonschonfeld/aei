@@ -2,9 +2,9 @@
 <html>
     <head>
         <meta name="layout" content="main" />
-        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+        <asset:stylesheet src="jquery-1.9.1.js"/>
+        <asset:stylesheet src="select2.min.css"/>
+        <asset:stylesheet src="select2.min.js"/>
         <g:set var="entityName" value="${message(code: 'inscription.label', default: 'Inscription')}" />
         <title><g:message code="default.list.label" args="[entityName]" /></title>
     </head>

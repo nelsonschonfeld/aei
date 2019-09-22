@@ -199,7 +199,7 @@
                              id="query"
                              placeholder="Código de barra"></g:textField>
                 <input type="button" id="search" onclick="findFeeByIdentificationCode()"
-                       value="${message(code: 'default.button.search.label')}"/>
+                       value="${message(code: 'default.button.search.label', default: 'Buscar')}"/>
             </div>
 
             <div class="fieldcontain required">
@@ -210,13 +210,13 @@
             </div>
 
             <f:field bean="payment" property="amountPaid">
-                <g:field type="number"  name="amountPaid" id="amountPaid" onchange="getAmountReturned()"/>
+                <g:field type="number" name="amountPaid" id="amountPaid" onchange="getAmountReturned()"/>
             </f:field>
             <div class="fieldcontain required">
                 <label>Vuelto</label>
                 <g:field type="number" name="amountReturned" id="amountReturned" disabled=""/>
                 <g:hiddenField name="valueAmountReturned" id="valueAmountReturned"/>
-        </div>
+            </div>
 
         </fieldset>
         <fieldset class="buttons">
