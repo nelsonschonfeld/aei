@@ -5,6 +5,8 @@ import enums.PaymentStatusEnum
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
 
+import java.text.SimpleDateFormat
+
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
 
@@ -32,7 +34,18 @@ class PaymentController {
 
     def findFeeDetails() {
         def feeDetails = Fee.read(params.idFee)
-        render([course: feeDetails.course.name, student: feeDetails.student.surname + " " + feeDetails.student.name, year: feeDetails.year, month: feeDetails.month.toString(), feeAmount: feeDetails.amount, feeAmountPaid: feeDetails.amountPaid, feeAmountFull: feeDetails.amountFull, discountAmount: feeDetails.discountAmount, inscriptionCost: feeDetails.inscriptionCost, testCost: feeDetails.testCost, printCost: feeDetails.printCost, extraCost: feeDetails.extraCost, firstExpiredDate: feeDetails.firstExpiredDate.format('yyyy-MM-dd hh:mm:SS'), amountFirstExpiredDate: feeDetails.amountFirstExpiredDate, secondExpiredDate: feeDetails.secondExpiredDate.format('yyyy-MM-dd hh:mm:SS'), amountSecondExpiredDate: feeDetails.amountSecondExpiredDate] as JSON)
+        def today = new Date().format( 'yyyy-MM-dd' )
+        def firsExp = feeDetails.firstExpiredDate.format('yyyy-MM-dd')
+        def secondExp = feeDetails.secondExpiredDate.format('yyyy-MM-dd')
+        def fullAmount = feeDetails.amountFull
+        if (today > firsExp && today <= secondExp) {
+            fullAmount = feeDetails.amountFirstExpiredDate
+        }
+        if (today > secondExp) {
+            fullAmount = feeDetails.amountSecondExpiredDate
+        }
+        feeDetails.firstExpiredDate
+        render([course: feeDetails.course.name, student: feeDetails.student.surname + " " + feeDetails.student.name, year: feeDetails.year, month: feeDetails.month.toString(), feeAmount: feeDetails.amount, feeAmountPaid: feeDetails.amountPaid, feeAmountFull: fullAmount, discountAmount: feeDetails.discountAmount, inscriptionCost: feeDetails.inscriptionCost, testCost: feeDetails.testCost, printCost: feeDetails.printCost, extraCost: feeDetails.extraCost, firstExpiredDate: feeDetails.firstExpiredDate.format('yyyy-MM-dd hh:mm:SS'), amountFirstExpiredDate: feeDetails.amountFirstExpiredDate, secondExpiredDate: feeDetails.secondExpiredDate.format('yyyy-MM-dd hh:mm:SS'), amountSecondExpiredDate: feeDetails.amountSecondExpiredDate, status: feeDetails.status.toString()] as JSON)
     }
 
     def index(Integer max) {
@@ -67,7 +80,12 @@ class PaymentController {
         try {
             Fee fee = Fee.get(params.selectIdentificationCode)
             // validamos si la cuota esta pagada
-            if (fee.amountFull == fee.amountPaid) {
+            if (fee.status  == FeeStatusEnum.Trasladado) {
+                flash.error = "La cuota no se encuentra disponible para pagar, ya fue trasladada a una cuota posterior."
+                respond payment, view: 'create'
+                return
+            }
+            if ((fee.amountFull == fee.amountPaid) || (fee.status == FeeStatusEnum.Pagado)) {
                 flash.error = "La cuota ya fue cancelada."
                 respond payment, view: 'create'
                 return
@@ -85,7 +103,23 @@ class PaymentController {
                 payment.amountReturned = vuelto
             }
             payment.amountPaid =  Double.parseDouble(params.amountPaid) - vuelto
-            payment.status = PaymentStatusEnum.Total
+
+            //calculamos el monto a pagar en base a las fechas de vencimiento
+            def today = new Date().format( 'yyyy-MM-dd' )
+            def firsExp = fee.firstExpiredDate.format('yyyy-MM-dd')
+            def secondExp = fee.secondExpiredDate.format('yyyy-MM-dd')
+            def fullAmount = fee.amountFull
+            if (today > firsExp && today <= secondExp) {
+                fullAmount = fee.amountFirstExpiredDate
+            }
+            if (today > secondExp) {
+                fullAmount = fee.amountSecondExpiredDate
+            }
+            if (Double.parseDouble(params.amountPaid) < fullAmount) {
+                payment.status = PaymentStatusEnum.Parcial
+            } else {
+                payment.status = PaymentStatusEnum.Total
+            }
 
             if (payment.hasErrors()) {
                 transactionStatus.setRollbackOnly()
@@ -96,7 +130,7 @@ class PaymentController {
             payment.save flush: true
 
             //actualizamos el fee
-            if (fee.amountFull == (fee.amountPaid + payment.amountPaid)) {
+            if (fullAmount == (fee.amountPaid + payment.amountPaid)) {
                 fee.status = FeeStatusEnum.Pagado
             } else {
                 fee.status = FeeStatusEnum.Parcial
@@ -120,10 +154,12 @@ class PaymentController {
         }
     }
 
+    @Secured(['ROLE_ADMIN'])
     def edit(Payment payment) {
         respond payment
     }
 
+    @Secured(['ROLE_ADMIN'])
     @Transactional
     def update(Payment payment) {
         if (payment == null) {
@@ -149,6 +185,7 @@ class PaymentController {
         }
     }
 
+    @Secured(['ROLE_ADMIN'])
     @Transactional
     def delete(Payment payment) {
 

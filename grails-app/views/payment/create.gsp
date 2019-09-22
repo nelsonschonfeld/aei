@@ -53,7 +53,8 @@
                     $("#firstExpiredDate").text(resp.firstExpiredDate);
                     $("#amountFirstExpiredDate").text(resp.amountFirstExpiredDate);
                     $("#secondExpiredDate").text(resp.secondExpiredDate);
-                    $("#amountSecondExpiredDate").text(resp.amountFirstExpiredDate);
+                    $("#amountSecondExpiredDate").text(resp.amountSecondExpiredDate);
+                    $("#status").text(resp.status);
                 }
             });
         }
@@ -121,6 +122,11 @@
                 <div>
                     <label>- Mes:</label>
                     <span id="month"></span>
+                </div>
+
+                <div>
+                    <label>- Estado:</label>
+                    <span id="status"></span>
                 </div>
 
                 <div>
