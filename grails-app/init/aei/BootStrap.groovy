@@ -24,7 +24,6 @@ class BootStrap {
         userSec.save(flush: flush)
         def userRoleSec = new UserRole(role: roleSec, user: userSec)
         userRoleSec.save(flush: flush, failOnError: failOnError)
-
     }
 
     def destroy = {

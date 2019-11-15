@@ -56,10 +56,10 @@ class FeeController {
         }
 
         if (params.status) {
-            feeList = feeList.findAll {it.status?.value == params.status}
+            feeList = feeList.findAll { it.status?.value == params.status }
         }
 
-        respond feeList, model:[feeCount: Fee.count()]
+        respond feeList, model: [feeCount: Fee.count()]
     }
 
     def show(Fee fee) {
@@ -171,11 +171,13 @@ class FeeController {
             return
         }
 
+        def pdfData = []
+
         for (String student : Eval.me(params.studentsInscriptos.toString())) {
             def newFee = fee.clone()
             try {
                 newFee.id = params.inscriptionsSelect + ' ' + student + ' ' + newFee.month
-                double random =  Math.random()
+                double random = Math.random()
                 String doubleAsString = String.valueOf(random);
                 int indexOfDecimal = doubleAsString.indexOf(".");
                 def identificationCode = doubleAsString.substring(indexOfDecimal + 1).toBigInteger()
@@ -227,6 +229,8 @@ class FeeController {
                     return
                 }
 
+                pdfData.add(newFee)
+
                 newFee.save flush: true
             } catch (Exception e) {
                 transactionStatus.setRollbackOnly()
@@ -237,7 +241,8 @@ class FeeController {
         }
 
         flash.message = "La/s Cuota/s fueron generadas correctamente."
-        redirect action: "index", method: "GET"
+        //redirect action: "download", method: "GET"
+        render( view: "/fee/download",  model: [pdf: pdfData])
 
 //        request.withFormat {
 //            form multipartForm {
@@ -314,4 +319,44 @@ class FeeController {
             '*' { render status: NOT_FOUND }
         }
     }
+
+    /*@Secured(['ROLE_ADMIN', 'ROLE_SECRETARIA'])
+    def download() {
+        println("nelson download")
+        println(fee.amountPaid)
+        println(params)
+        def pdf = []
+        def student = [:]
+        student.id = 0001
+        student.student = "Nelson Schonfeld"
+        student.descBill = "Cuota Nov + 1/2 Dic 2018 - Segment VIII A"
+        student.hours = "HORARIO DE COBRO: 14:00 a 20:30 - Lunes a Viernes"
+        student.firstExpirationDate = "1er venc 12/11/2018: \$1500"
+        student.secondExpirationDate = "1er venc 12/11/2018: \$1500"
+
+        pdf.add(student)
+
+        student = [:]
+        student.id = 0002
+        student.student = "Brian Ramseyer"
+        student.descBill = "Cuota Nov + 1/2 Dic 2018 - Segment VIII A"
+        student.hours = "HORARIO DE COBRO: 14:00 a 20:30 - Lunes a Viernes"
+        student.firstExpirationDate = "1er venc 12/11/2018: \$1500"
+        student.secondExpirationDate = "1er venc 12/11/2018: \$1500"
+
+        pdf.add(student)
+
+        student = [:]
+        student.id = 0003
+        student.student = "Ayelen Cian"
+        student.descBill = "Cuota Nov + 1/2 Dic 2018 - Segment VIII A"
+        student.hours = "HORARIO DE COBRO: 14:00 a 20:30 - Lunes a Viernes"
+        student.firstExpirationDate = "1er venc 12/11/2018: \$1500"
+        student.secondExpirationDate = "1er venc 12/11/2018: \$1500"
+
+        pdf.add(student)
+
+        respond("pdf": pdf)
+    }*/
+
 }
