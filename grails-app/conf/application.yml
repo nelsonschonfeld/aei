@@ -121,8 +121,13 @@ environments:
             url: 'jdbc:mysql://localhost:3306/devDB'
     production:
         dataSource:
-            dbCreate: 'none'
+            pooled: true
+            driverClassName: 'com.mysql.jdbc.Driver'
+            dialect: 'org.hibernate.dialect.MySQL5InnoDBDialect'
+            dbCreate: 'update'
             url: 'jdbc:mysql://localhost:3306/prodDB'
+            username: 'aeiadminjp'
+            password: 'jp2019sistema'
             properties:
                 jmxEnabled: true
                 initialSize: 5
