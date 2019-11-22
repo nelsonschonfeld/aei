@@ -126,7 +126,7 @@ environments:
             dialect: 'org.hibernate.dialect.MySQL5InnoDBDialect'
             dbCreate: 'update'
             url: 'jdbc:mysql://localhost:3306/prodDB'
-            username: 'aeiadminjp'
+            username: 'root'
             password: 'jp2019sistema'
             properties:
                 jmxEnabled: true
