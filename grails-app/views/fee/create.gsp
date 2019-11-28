@@ -192,7 +192,13 @@
                 <label>Estado del Curso</label>
                 <b><u><span id="spanCourseStatus"></span></u></b>
             </div>
-            <f:all bean="fee" except="inscription, course,student,amount,amountPaid, amountFull, discountAmount,inscriptionCost,testCost,printCost,status,year, amountFirstExpiredDate, amountSecondExpiredDate"/>
+
+            <f:all bean="fee" except="comment,inscription, course,student,amount,amountPaid, amountFull, discountAmount,inscriptionCost,testCost,printCost,status,year, amountFirstExpiredDate, amountSecondExpiredDate"/>
+
+            <f:field bean="fee" property="comment">
+                <g:textArea name="comment" rows="3" cols="60"/>
+            </f:field>
+
         </fieldset>
         <fieldset class="buttons">
             <g:submitButton name="create" class="save"
