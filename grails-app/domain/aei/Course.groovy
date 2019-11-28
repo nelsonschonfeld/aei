@@ -22,6 +22,7 @@ class Course {
     Boolean tuesday
     Boolean friday
     Boolean saturday
+    String updatedByUser
     Date dateCreated
     Date lastUpdated
     CourseStatusEnum status
@@ -45,6 +46,7 @@ class Course {
         friday(nullable: true)
         saturday(nullable: true)
         status(nullable: false)
+        updatedByUser(display:false, nullable:true)
         dateCreated(display: false)
         lastUpdated(display: false)
     }

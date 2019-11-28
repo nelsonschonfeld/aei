@@ -9,6 +9,7 @@ import grails.transaction.Transactional
 @Secured(['ROLE_ADMIN', 'ROLE_SECRETARIA'])
 class PersonController {
 
+    def springSecurityService
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
     def index(Integer max) {
@@ -49,6 +50,7 @@ class PersonController {
             respond person.errors, view:'create'
             return
         }
+        person.updatedByUser = springSecurityService.currentUser.username
 
         person.save flush:true
 
@@ -79,6 +81,7 @@ class PersonController {
             return
         }
 
+        person.updatedByUser = springSecurityService.currentUser.username
         person.save flush:true
 
         request.withFormat {

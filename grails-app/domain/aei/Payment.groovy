@@ -14,6 +14,7 @@ class Payment {
     PaymentStatusEnum status
     Date dateCreated
     Date lastUpdated
+    String updatedByUser
 
     static constraints = {
         feeCode nullable:true
@@ -23,5 +24,6 @@ class Payment {
         course nullable:true
         inscription nullable:true
         status nullable:true
+        updatedByUser(display:false, nullable:true)
     }
 }

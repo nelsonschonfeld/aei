@@ -29,6 +29,7 @@ class Fee {
     String comment
     Date dateCreated
     Date lastUpdated
+    String updatedByUser
 
     static constraints = {
         identificationCode(nullable: true)
@@ -52,6 +53,7 @@ class Fee {
         comment(nullable:true)
         secondExpiredDate(nullable: false)
         status(nullable: false)
+        updatedByUser(display:false, nullable:true)
     }
 
     static mapping = {

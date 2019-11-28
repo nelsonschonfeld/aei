@@ -17,6 +17,7 @@ class Person {
     String professionPlace
     PersonTypeEnum type
     String comment
+    String updatedByUser
     Date dateCreated
     Date lastUpdated
 
@@ -35,6 +36,7 @@ class Person {
         professionPlace(nullable:true)
         type(nullable:false)
         comment(nullable:true)
+        updatedByUser(display:false, nullable:true)
         dateCreated display:false
         lastUpdated display:false
     }

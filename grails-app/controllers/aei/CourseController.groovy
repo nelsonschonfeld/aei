@@ -8,7 +8,7 @@ import grails.transaction.Transactional
 @Transactional(readOnly = true)
 @Secured(['ROLE_ADMIN', 'ROLE_SECRETARIA'])
 class CourseController {
-
+    def springSecurityService
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
     def index(Integer max) {
@@ -50,6 +50,7 @@ class CourseController {
 
         try {
             course.id = course.name +'_'+ course.type +'_'+ course.year
+            course.updatedByUser = springSecurityService.currentUser.username
             course.save flush:true
         }catch (Exception e){
             flash.error = "El course con la combinación del NOMBRE, TIPO y AÑO ya se registró. Verifícalo."
@@ -84,6 +85,7 @@ class CourseController {
             return
         }
 
+        course.updatedByUser = springSecurityService.currentUser.username
         course.save flush:true
 
         request.withFormat {

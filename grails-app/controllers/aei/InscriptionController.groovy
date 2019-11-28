@@ -10,6 +10,7 @@ import grails.transaction.Transactional
 @Secured(['ROLE_ADMIN', 'ROLE_SECRETARIA'])
 class InscriptionController {
 
+    def springSecurityService
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
     def index(Integer max) {
@@ -90,6 +91,7 @@ class InscriptionController {
 
         try {
             inscription.id = inscription.course.id + "_" + inscription.student.toString()
+            inscription.updatedByUser = springSecurityService.currentUser.username
             inscription.save flush:true
         }catch (Exception e){
             transactionStatus.setRollbackOnly()
@@ -125,6 +127,7 @@ class InscriptionController {
             return
         }
 
+        inscription.updatedByUser = springSecurityService.currentUser.username
         inscription.save flush:true
 
         request.withFormat {

@@ -11,6 +11,7 @@ import grails.transaction.Transactional
 @Secured(['ROLE_ADMIN', 'ROLE_SECRETARIA'])
 class FeeController {
 
+    def springSecurityService
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
     def getInscription(Integer max) {
@@ -172,6 +173,7 @@ class FeeController {
         }
 
         def pdfData = []
+        fee.updatedByUser = springSecurityService.currentUser.username
 
         for (String student : Eval.me(params.studentsInscriptos.toString())) {
             def newFee = fee.clone()
@@ -278,6 +280,7 @@ class FeeController {
         } else {
             fee.status = FeeStatusEnum.Parcial
         }
+        fee.updatedByUser = springSecurityService.currentUser.username
         fee.save flush: true
 
         request.withFormat {

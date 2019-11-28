@@ -14,6 +14,7 @@ import grails.transaction.Transactional
 @Secured(['ROLE_ADMIN', 'ROLE_SECRETARIA'])
 class PaymentController {
 
+    def springSecurityService
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
     def findFeeByIdentificationCode() {
@@ -127,6 +128,7 @@ class PaymentController {
                 return
             }
 
+            payment.updatedByUser = springSecurityService.currentUser.username
             payment.save flush: true
 
             //actualizamos el fee
@@ -174,6 +176,7 @@ class PaymentController {
             return
         }
 
+        payment.updatedByUser = springSecurityService.currentUser.username
         payment.save flush: true
 
         request.withFormat {
