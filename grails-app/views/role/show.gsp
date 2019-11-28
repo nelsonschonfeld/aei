@@ -10,8 +10,6 @@
         <div class="nav" role="navigation">
             <ul>
                 <li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
-                <li><g:link class="list" action="index"><g:message code="role.list.label" /></g:link></li>
-                <li><g:link class="create" action="create"><g:message code="role.create.label" /></g:link></li>
             </ul>
         </div>
         <div id="show-role" class="content scaffold-show" role="main">
@@ -22,8 +20,6 @@
             <f:display bean="role" />
             <g:form resource="${this.role}" method="DELETE">
                 <fieldset class="buttons">
-                    <g:link class="edit" action="edit" resource="${this.role}"><g:message code="role.button.update.label" default="Edit" /></g:link>
-                    <input class="delete" type="submit" value="${message(code: 'role.button.delete.label', default: 'Delete')}" onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
                 </fieldset>
             </g:form>
         </div>

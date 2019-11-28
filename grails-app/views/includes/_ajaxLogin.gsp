@@ -8,9 +8,6 @@
         <br>
         <g:link elementId='logout' controller='logout'> Salir</g:link>
     </sec:ifLoggedIn>
-    <sec:ifNotLoggedIn>
-        <a href="#" onclick="showLogin(); return false;">Identíficate</a>
-    </sec:ifNotLoggedIn>
 </span>
 
 <div id="ajaxLogin" class="jqmWindow" style="z-index: 3000;">

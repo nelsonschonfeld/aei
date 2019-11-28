@@ -38,7 +38,6 @@
                            aria-expanded="false">Usuarios <span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <li><a href="/user/index">Usuarios</a></li>
-                            <li><a href="/role/index">Perfiles</a></li>
                             <li><a href="/userRole/index">Perfiles Asignados</a></li>
                         </ul>
                     </li>
