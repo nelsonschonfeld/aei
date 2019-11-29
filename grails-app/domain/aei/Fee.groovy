@@ -50,8 +50,8 @@ class Fee {
         amountFirstExpiredDate(nullable: true)
         firstExpiredDate(nullable: false)
         amountSecondExpiredDate(nullable: true)
-        comment(nullable:true)
         secondExpiredDate(nullable: false)
+        comment(nullable:true)
         status(nullable: false)
         updatedByUser(display:false, nullable:true)
     }
