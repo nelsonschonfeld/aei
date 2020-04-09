@@ -81,6 +81,13 @@
                             <li><a href="/payment/create">Generar Pago</a></li>
                         </ul>
                     </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false">Sistema <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/system/export">Generar backup</a></li>
+                        </ul>
+                    </li>
                 </div>
             </ul>
             <g:render template='/includes/ajaxLogin'/>
