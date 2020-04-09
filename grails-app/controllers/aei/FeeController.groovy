@@ -12,6 +12,7 @@ import grails.transaction.Transactional
 class FeeController {
 
     def springSecurityService
+    def exportService
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
     def getInscription(Integer max) {
@@ -58,6 +59,25 @@ class FeeController {
 
         if (params.status) {
             feeList = feeList.findAll { it.status?.value == params.status }
+        }
+
+        if(params?.f && params.f != "html"){
+            List fields = ["identificationCode", "course", "student", "amount", "amountPaid", "amountFull", "status", "month", "year", "dateCreated"]
+			Map labels = ["identificationCode": g.message(code: 'fee.identificationCode.label'), 
+                            "course": g.message(code: 'fee.course.label'),
+                            "student": g.message(code: 'fee.student.label'),
+                            "amount": g.message(code: 'fee.amount.label'),
+                            "amountPaid": g.message(code: 'fee.amountPaid.label'),
+                            "amountFull": g.message(code: 'fee.amountFull.label'),
+                            "status": g.message(code: 'fee.status.label'),
+                            "month": g.message(code: 'fee.month.label'),
+                            "year": g.message(code: 'fee.year.label'),
+                            "dateCreated": g.message(code: 'fee.dateCreated.label')]
+
+            response.contentType = grailsApplication.config.grails.mime.types[params.f]
+            response.setHeader("Content-disposition", "attachment; filename=fee.${params.extension}")
+
+            exportService.export(params.f, response.outputStream, feeList, fields, labels, [:], [:])
         }
 
         respond feeList, model: [feeCount: Fee.count()]

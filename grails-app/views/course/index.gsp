@@ -3,7 +3,9 @@
 <head>
     <meta name="layout" content="main"/>
     <g:set var="entityName" value="${message(code: 'course.label', default: 'Course')}"/>
+    <r:require module="export"/>
     <title><g:message code="default.list.label" args="[entityName]"/></title>
+    <asset:javascript src="jquery-1.9.1.js"/>
 </head>
 
 <body>
@@ -17,6 +19,8 @@
                                                               args="[entityName]"/></g:link></li>
     </ul>
 </div>
+
+<export:formats formats="['csv', 'excel', 'pdf']" />
 
 <div id="list-course" class="content scaffold-list" role="main">
     <h1><g:message code="default.list.label" args="[entityName]"/></h1>
@@ -37,5 +41,12 @@
             <g:paginate total="${courseCount ?: 0}"/>
         </div>
 </div>
+    <script type="text/javascript">
+        $('.menuButton a').click(function() {
+            var url = this.href + '&query=' + $('#query').val();
+            window.location.href = url;
+            return false;
+        });
+    </script>
 </body>
 </html>

@@ -15,6 +15,7 @@ import grails.transaction.Transactional
 class PaymentController {
 
     def springSecurityService
+    def exportService
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
     def findFeeByIdentificationCode() {
@@ -75,6 +76,24 @@ class PaymentController {
             } else {
                 paymentList = Payment.findAllWhere(course: course)
             }
+        }
+
+        if(params?.f && params.f != "html"){
+            List fields = ["course", "student", "inscription", "feeCode", "amountDelivered", "amountPaid", "amountReturned", "status", "dateCreated"]
+			Map labels = ["course": g.message(code: 'payment.course.label'),
+                            "student": g.message(code: 'payment.student.label'),
+                            "inscription": g.message(code: 'payment.inscription.label'),
+                            "feeCode": g.message(code: 'payment.feeCode.label'),
+                            "amountDelivered": g.message(code: 'payment.amountDelivered.label'),
+                            "amountPaid": g.message(code: 'payment.amountPaid.label'),
+                            "amountReturned": g.message(code: 'payment.amountReturned.label'),
+                            "status": g.message(code: 'payment.status.label'),
+                            "dateCreated": g.message(code: 'payment.dateCreated.label')]
+
+            response.contentType = grailsApplication.config.grails.mime.types[params.f]
+            response.setHeader("Content-disposition", "attachment; filename=payment.${params.extension}")
+
+            exportService.export(params.f, response.outputStream, paymentList, fields, labels, [:], [:])
         }
 
         respond paymentList, model: [paymentCount: Payment.count()]

@@ -11,6 +11,7 @@ import grails.transaction.Transactional
 class InscriptionController {
 
     def springSecurityService
+    def exportService
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
     def index(Integer max) {
@@ -39,6 +40,18 @@ class InscriptionController {
             } else {
                 inscripcionList = Inscription.findAllWhere(course: course)
             }
+        }
+
+        if(params?.f && params.f != "html"){
+            List fields = ["course", "student", "discountAmount"]
+			Map labels = ["course": g.message(code: 'inscription.course.label'), 
+                            "student": g.message(code: 'inscription.student.label'),
+                            "discountAmount": g.message(code: 'inscription.discountAmount.label')]
+
+            response.contentType = grailsApplication.config.grails.mime.types[params.f]
+            response.setHeader("Content-disposition", "attachment; filename=inscription.${params.extension}")
+
+            exportService.export(params.f, response.outputStream, inscripcionList, fields, labels, [:], [:])
         }
 
         respond inscripcionList, model:[inscriptionCount: Inscription.count()]

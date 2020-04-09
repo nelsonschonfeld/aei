@@ -6,6 +6,7 @@
         <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
         <g:set var="entityName" value="${message(code: 'payment.label', default: 'Payment')}" />
+        <r:require module="export"/>
         <title><g:message code="default.list.label" args="[entityName]" /></title>
     </head>
     <body>
@@ -29,6 +30,7 @@
                 optionKey="id"
                 optionValue="id"
                 noSelection="['':'Selecciona un curso']"
+                value="${params.course}"
         />
         <g:select class="searchSelect"
                   id="student"
@@ -37,11 +39,14 @@
                   optionKey="id"
                   optionValue="${name}"
                   noSelection="['':'Selecciona un estudiante']"
+                  value="${params.student}"
         />
         <g:submitButton name="search" class="save" style="border-radius: 4px;" value="${message(code: 'default.button.search.label', default: 'Buscar')}" />
     </div>
     </g:form>
     </fieldset>
+
+        <export:formats formats="['csv', 'excel', 'pdf']" />
 
         <div id="list-payment" class="content scaffold-list" role="main">
             <h1><g:message code="default.list.label" args="[entityName]" /></h1>
@@ -54,5 +59,13 @@
                 <g:paginate total="${paymentCount ?: 0}" />
             </div>
         </div>
+
+        <script type="text/javascript">
+            $('.menuButton a').click(function() {
+                var url = this.href + '&course=' + $('#course').val() + '&student=' + $('#student').val();
+                window.location.href = url;
+                return false;
+            });
+        </script>
     </body>
 </html>

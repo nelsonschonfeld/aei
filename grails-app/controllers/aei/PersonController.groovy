@@ -10,6 +10,7 @@ import grails.transaction.Transactional
 class PersonController {
 
     def springSecurityService
+    def exportService
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
     def index(Integer max) {
@@ -24,6 +25,22 @@ class PersonController {
                     and {ilike("dni", "%${params.query}%")}
                 }
             }
+        }
+
+        if(params?.f && params.f != "html"){
+            List fields = ["dni", "name", "surname", "email", "address", "cellphone", "telephone"]
+			Map labels = ["dni": g.message(code: 'person.dni.label'), 
+                            "name": g.message(code: 'person.name.label'),
+                            "surname": g.message(code: 'person.surname.label'),
+                            "email": g.message(code: 'person.email.label'),
+                            "address": g.message(code: 'person.address.label'),
+                            "cellphone": g.message(code: 'person.cellphone.label'),
+                            "telephone": g.message(code: 'person.telephone.label')]
+
+            response.contentType = grailsApplication.config.grails.mime.types[params.f]
+            response.setHeader("Content-disposition", "attachment; filename=people.${params.extension}")
+
+            exportService.export(params.f, response.outputStream, personList, fields, labels, [:], [:])
         }
 
         respond personList, model:[personCount: Person.count()]

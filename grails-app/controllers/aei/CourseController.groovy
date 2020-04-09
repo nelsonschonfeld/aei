@@ -9,6 +9,7 @@ import grails.transaction.Transactional
 @Secured(['ROLE_ADMIN', 'ROLE_SECRETARIA'])
 class CourseController {
     def springSecurityService
+    def exportService
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
     def index(Integer max) {
@@ -23,6 +24,23 @@ class CourseController {
                 }
             }
         }
+
+        if(params?.f && params.f != "html"){
+            List fields = ["name", "type", "year", "teacher", "amount", "schedule", "status"]
+			Map labels = ["name": g.message(code: 'course.name.label'), 
+                            "type": g.message(code: 'course.type.label'),
+                            "year": g.message(code: 'course.year.label'),
+                            "teacher": g.message(code: 'course.teacher.label'),
+                            "amount": g.message(code: 'course.amount.label'),
+                            "schedule": g.message(code: 'course.schedule.label'),
+                            "status": g.message(code: 'course.status.label')]
+
+            response.contentType = grailsApplication.config.grails.mime.types[params.f]
+            response.setHeader("Content-disposition", "attachment; filename=course.${params.extension}")
+
+            exportService.export(params.f, response.outputStream, courseList, fields, labels, [:], [:])
+        }
+
         respond courseList, model:[courseCount: Course.count()]
     }
 
