@@ -83,6 +83,14 @@
                     </li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false">Cierre de caja<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/cash/index">Cierres de caja</a></li>
+                            <li><a href="/cash/create">Cerrar caja</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                            aria-expanded="false">Sistema <span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <li><a href="/system/export">Generar backup</a></li>
