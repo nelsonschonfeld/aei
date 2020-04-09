@@ -26,6 +26,7 @@ class Fee {
     Double amountFirstExpiredDate
     Date secondExpiredDate
     Double amountSecondExpiredDate
+    String comment
     Date dateCreated
     Date lastUpdated
     String updatedByUser
@@ -49,6 +50,7 @@ class Fee {
         amountFirstExpiredDate(nullable: true)
         firstExpiredDate(nullable: false)
         amountSecondExpiredDate(nullable: true)
+        comment(nullable:true)
         secondExpiredDate(nullable: false)
         status(nullable: false)
         updatedByUser(display:false, nullable:true)

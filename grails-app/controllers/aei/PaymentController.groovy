@@ -50,9 +50,34 @@ class PaymentController {
     }
 
     def index(Integer max) {
+        params.max = Math.min(max ?: 20, 100)
 
-        params.max = Math.min(max ?: 10, 100)
-        respond Payment.list(params), model: [paymentCount: Payment.count()]
+        def course
+        def student
+        def paymentList
+
+        if (!params.student && !params.course) {
+            paymentList = Payment.list()
+        } else {
+
+            if (params.course) {
+                course = Course.findById(params.course)
+            }
+
+            if (params.student) {
+                student = Person.findById(params.student)
+            }
+
+            if (course && student) {
+                paymentList = Payment.findAllWhere(course: course, student: student)
+            } else if (student) {
+                paymentList = Payment.findAllWhere(student: student)
+            } else {
+                paymentList = Payment.findAllWhere(course: course)
+            }
+        }
+
+        respond paymentList, model: [paymentCount: Payment.count()]
     }
 
     def show(Payment payment) {
