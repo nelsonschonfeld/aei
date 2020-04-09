@@ -37,13 +37,13 @@ class BootStrap {
                     address:'BS AS 1345',cellphone:'155567890',birthDate:new Date(),type:PersonTypeEnum.Estudiante, updatedByUser: "nelson")
             person3.save(flush: flush, failOnError: failOnError)
 
-            def course = new Course(name: 'Segment 5', type: 'Junior', year: 2019, teacher: 'Mercedez', amount: 1200, firstDueCost: 1300, secondDueCost: 1400, inscriptionCost: 500, testCost: 800, printCost: 25, monday: true, wednesday: true, schedule: "19:30", status: CourseStatusEnum.Abierto, dateCreated: new Date(), lastUpdated: new Date(), updatedByUser: "nelson")
+            def course = new Course(name: 'Segment 5', type: 'Junior', year: 2019, teacher: 'Mercedez', amount: 1000, firstDueCost: 1100, secondDueCost: 1100, inscriptionCost: 300, testCost: 500, printCost: 50, monday: true, wednesday: true, schedule: "19:30", status: CourseStatusEnum.Abierto, dateCreated: new Date(), lastUpdated: new Date(), updatedByUser: "nelson")
             course.id="Segment 5 Junior 2019"
             course.save(flush: flush, failOnError: true)
-            def course2 = new Course(name: 'Segment 5', type: 'Adult', year: 2018, teacher: 'Mercedez', amount: 1200, firstDueCost: 1300, secondDueCost: 1400, inscriptionCost: 500, testCost: 800, printCost: 25, wednesday: true, saturday: true, schedule: "21:30", status: CourseStatusEnum.Abierto, dateCreated: new Date(), lastUpdated: new Date(), updatedByUser: "nelson")
+            def course2 = new Course(name: 'Segment 5', type: 'Adult', year: 2018, teacher: 'Mercedez', amount: 1200, firstDueCost: 1300, secondDueCost: 1300, inscriptionCost: 500, testCost: 800, printCost: 25, wednesday: true, saturday: true, schedule: "21:30", status: CourseStatusEnum.Abierto, dateCreated: new Date(), lastUpdated: new Date(), updatedByUser: "nelson")
             course2.id="Segment 5 Adult 2018"
             course2.save(flush: flush, failOnError: true)
-            def course3 = new Course(name: 'Segment 5', type: 'Adult', year: 2019, teacher: 'Mercedez', amount: 1200, firstDueCost: 1300, secondDueCost: 1400, inscriptionCost: 500, testCost: 800, printCost: 25, monday: true, wednesday: true, schedule: "20:30", status: CourseStatusEnum.Abierto, dateCreated: new Date(), lastUpdated: new Date(), updatedByUser: "nelson")
+            def course3 = new Course(name: 'Segment 5', type: 'Adult', year: 2019, teacher: 'Mercedez', amount: 1200, firstDueCost: 1300, secondDueCost: 1300, inscriptionCost: 500, testCost: 800, printCost: 25, monday: true, wednesday: true, schedule: "20:30", status: CourseStatusEnum.Abierto, dateCreated: new Date(), lastUpdated: new Date(), updatedByUser: "nelson")
             course3.id="Segment 5 Adult 2019"
             course3.save(flush: flush, failOnError: true)
 
