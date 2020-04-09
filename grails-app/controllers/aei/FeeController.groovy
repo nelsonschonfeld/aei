@@ -165,11 +165,13 @@ class FeeController {
             respond fee, view: 'create'
             return
         }
-        //validacion cuota
-        if (params.courseAmount == null || params.courseAmount == "" || params.courseAmount == "0") {
-            flash.error = "La Cuota no puede ser vacio o cero"
-            respond fee, view: 'create'
-            return
+        //validacion cuota para cuando no posee costo de inscripcion
+        if ((params.courseAmount == null || params.courseAmount == "" || params.courseAmount == 0) && (!params.checkCourseInscriptionCost || !params._checkCourseTestCost || !params._checkCourseTestCost)) {
+            if (!params.checkCourseInscriptionCost) {
+                flash.error = "La Cuota no puede ser vacio o cero"
+                respond fee, view: 'create'
+                return
+            }
         }
 
         def pdfData = []
@@ -188,7 +190,15 @@ class FeeController {
                 newFee.inscription = inscriptionObject
                 def studentObject = Person.findByDni(student)
                 newFee.student = studentObject
-                newFee.amount = Double.parseDouble(params.courseAmount)
+
+                //caso de registramos solo la inscripción
+                def isInscriptionWithoutFee = false
+                if ((params.courseAmount == null || params.courseAmount == 0) && params.checkCourseInscriptionCost){
+                    isInscriptionWithoutFee = true
+                    newFee.amount = 0
+                } else {
+                    newFee.amount = Double.parseDouble(params.courseAmount)
+                }
                 newFee.inscriptionCost = params.checkCourseInscriptionCost ? Double.parseDouble(params.courseInscriptionCost) : 0
                 newFee.testCost = params.checkCourseTestCost ? Double.parseDouble(params.courseTestCost) : 0
                 newFee.printCost = params.checkCoursePrintCost ? Double.parseDouble(params.coursePrintCost) : 0
@@ -205,7 +215,7 @@ class FeeController {
                     allFee.each { prevFee ->
                         if (prevFee.status == FeeStatusEnum.Iniciado || prevFee.status == FeeStatusEnum.Parcial) {
                             //buscamos el monto adeudado de las cuotas pasadas
-                            amountToPaid = amountToPaid + (prevFee.amountFull - prevFee.amountPaid)
+                            amountToPaid = amountToPaid + (prevFee.amountFirstExpiredDate - prevFee.amountPaid)
                             //actualizamos el estado de la cuota a Trasladado ya que se pasa a la próxima cuota
                             prevFee.status = FeeStatusEnum.Trasladado
                             prevFee.save flush: true
@@ -214,17 +224,21 @@ class FeeController {
                 }
 
                 def totalToPaid = (newFee.amount + newFee.inscriptionCost + newFee.printCost + (newFee.testCost / 2))
-                def totalToPaidWithDiscount = (totalToPaid * newFee.discountAmount) / 100
+                def totalToPaidWithDiscount = (newFee.amount * newFee.discountAmount) / 100
                 newFee.amountFull = newFee.extraCost + amountToPaid + totalToPaid - totalToPaidWithDiscount
 
-                def totalToPaidFirst = (course.firstDueCost + newFee.inscriptionCost + newFee.printCost + (newFee.testCost / 2))
-                def totalToPaidWithDiscountFirst = (totalToPaidFirst * newFee.discountAmount) / 100
-                newFee.amountFirstExpiredDate = newFee.extraCost + amountToPaid + totalToPaidFirst - totalToPaidWithDiscountFirst
+                //caso de registramos solo la inscripción
+                def courseFirstDueCost = course.firstDueCost
+                def courseSecondDueCost = course.secondDueCost
+                if (isInscriptionWithoutFee) {
+                    courseFirstDueCost = 0
+                    courseSecondDueCost = 0
+                }
+                def totalToPaidFirst = (courseFirstDueCost + newFee.inscriptionCost + newFee.printCost + (newFee.testCost / 2))
+                newFee.amountFirstExpiredDate = newFee.extraCost + amountToPaid + totalToPaidFirst
 
-                def totalToPaidSecond = (course.secondDueCost + newFee.inscriptionCost + newFee.printCost + (newFee.testCost / 2))
-                def totalToPaidWithDiscountSecond = (totalToPaidSecond * newFee.discountAmount) / 100
-                newFee.amountSecondExpiredDate = newFee.extraCost + amountToPaid + totalToPaidSecond - totalToPaidWithDiscountSecond
-
+                def totalToPaidSecond = (courseSecondDueCost + newFee.inscriptionCost + newFee.printCost + (newFee.testCost / 2))
+                newFee.amountSecondExpiredDate = newFee.extraCost + amountToPaid + totalToPaidSecond
                 if (newFee.hasErrors()) {
                     transactionStatus.setRollbackOnly()
                     respond newFee.errors, view: 'create'

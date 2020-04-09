@@ -154,7 +154,7 @@
             </div>
 
             <div class="fieldcontain required">
-                <label>Monto de Examen ($)</label>
+                <label>Derecho de Examen ($)</label>
                 <g:checkBox name="checkCourseTestCost" id="checkCourseTestCost"/>
                 <span id="spanCourseTestCost"></span>
                 <g:hiddenField name="courseTestCost" id="courseTestCost"/>
