@@ -52,7 +52,7 @@
 
                     </fieldset>
 
-                    <f:all bean="cash" except="comment"/>
+                    <f:all bean="cash" except="comment" order="initalAmount,costs,total"/>
 
                     <f:field bean="cash" property="comment">
                         <g:textArea name="comment" rows="3" cols="60"/>

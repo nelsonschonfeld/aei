@@ -15,7 +15,7 @@
             </ul>
         </div>
         <div id="edit-fee" class="content scaffold-edit" role="main">
-            <h1><g:message code="default.edit.label" args="[entityName]" /></h1>
+            <h1><g:message code="default.reprint.label" args="[entityName]" /></h1>
             <g:if test="${flash.message}">
             <div class="message" role="status">${flash.message}</div>
             </g:if>
@@ -33,19 +33,19 @@
                 <g:hiddenField name="version" value="${this.fee?.version}" />
                 <fieldset class="form">
                     <b> CURSO:</b>
-                    <f:display bean="fee" property="course"/>
+                    <f:display bean="fee" property="course" />
                     <b> ALUMNO:</b>
-                    <f:display bean="fee" property="student"/>
+                    <f:display bean="fee" property="student" />
                     <b> MES:</b>
-                    <f:display bean="fee" property="month"/>
+                    <f:display bean="fee" property="month" />
                     <b> MONTO TOTAL A PAGAR: </b>$
-                    <f:display bean="fee" property="amountFull"/>
+                    <f:display bean="fee" property="amountFull" />
                     <b> ESTADO:</b>
-                    <f:display bean="fee" property="status"/>
-                    <f:all bean="fee" except="inscription, course,student,amount,amountPaid, amountFull, discountAmount,inscriptionCost,testCost,printCost, status, extraCost"/>
+                    <f:display bean="fee" property="status" />
+                    <%-- <f:all bean="fee" except="inscription, course,student,amount,amountPaid, amountFull, discountAmount,inscriptionCost,testCost,printCost, status, extraCost"/> --%>
                 </fieldset>
                 <fieldset class="buttons">
-                    <input class="save" type="submit" value="${message(code: 'default.button.update.label', default: 'Update')}" />
+                    <input class="save" type="submit" value="${message(code: 'default.button.reprint.label', default: 'Update')}" />
                 </fieldset>
             </g:form>
         </div>
