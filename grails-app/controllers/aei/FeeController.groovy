@@ -309,21 +309,30 @@ class FeeController {
             return
         }
 
-        if (fee.amountPaid == fee.amountFull) {
-            fee.status = FeeStatusEnum.Pagado
-        } else {
-            fee.status = FeeStatusEnum.Parcial
-        }
+        // if (fee.amountPaid == fee.amountFull) {
+        //     fee.status = FeeStatusEnum.Pagado
+        // } else {
+        //     fee.status = FeeStatusEnum.Parcial
+        // }
+
+        // Por default se le va sumando el valor de reimpresion
+        fee.printCost = Course.findById(fee.course).printCost + fee.printCost
+
         fee.updatedByUser = springSecurityService.currentUser.username
         fee.save flush: true
 
-        request.withFormat {
-            form multipartForm {
-                flash.message = message(code: 'default.updated.message', args: [message(code: 'fee.label', default: 'Fee'), fee.id])
-                redirect fee
-            }
-            '*' { respond fee, [status: OK] }
-        }
+        def pdfData = []
+        pdfData.add(fee)
+
+        flash.message = "La Cuota fue reimpresa correctamente."
+        render( view: "/fee/download",  model: [pdf: pdfData])
+        // request.withFormat {
+        //     form multipartForm {
+        //         flash.message = message(code: 'default.updated.message', args: [message(code: 'fee.label', default: 'Fee'), fee.id])
+        //         redirect fee
+        //     }
+        //     '*' { respond fee, [status: OK] }
+        // }
     }
 
     @Secured(['ROLE_ADMIN'])

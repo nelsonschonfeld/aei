@@ -53,9 +53,9 @@
                     //examen
                     $("#courseTestCost").val(resp.courseTestCost);
                     $("#spanCourseTestCost").text(" $ " + resp.courseTestCost);
-                    //costo de impresión
-                    $("#coursePrintCost").val(resp.coursePrintCost);
-                    $("#spanCoursePrintCost").text(" $ " + resp.coursePrintCost);
+                    ////costo de impresión
+                    //$("#coursePrintCost").val(resp.coursePrintCost);
+                    //$("#spanCoursePrintCost").text(" $ " + resp.coursePrintCost);
                     //Horario
                     if (resp.courseSchedule !== undefined && resp.courseSchedule !== null) {
                         $("#spanCourseSchedule").text(resp.courseSchedule);
@@ -160,12 +160,12 @@
                 <g:hiddenField name="courseTestCost" id="courseTestCost"/>
             </div>
 
-            <div class="fieldcontain required">
+            <%-- <div class="fieldcontain required">
                 <label>Costo de Reimpresión ($)</label>
                 <g:checkBox name="checkCoursePrintCost" id="checkCoursePrintCost"/>
                 <span id="spanCoursePrintCost"></span>
                 <g:hiddenField name="coursePrintCost" id="coursePrintCost"/>
-            </div>
+            </div> --%>
 
             <div class="fieldcontain required">
                 <label>Horario de Cursado</label>
