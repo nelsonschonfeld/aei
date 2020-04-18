@@ -10,5 +10,9 @@ class Cash {
 
     static constraints = {
         dateCreated(nullable:false, unique:true)
+        initalAmount nullable:false
+        costs nullable:false
+        comment nullable:true
+        user(display:false, nullable:true)
     }
 }

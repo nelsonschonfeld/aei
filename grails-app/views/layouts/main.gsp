@@ -86,7 +86,7 @@
                            aria-expanded="false">Cierre de caja<span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <li><a href="/cash/index">Cierres de caja</a></li>
-                            <li><a href="/cash/create">Cerrar caja</a></li>
+                            <li><a href="/cash/create">Generar Cerrar caja</a></li>
                         </ul>
                     </li>
                     <li class="dropdown">

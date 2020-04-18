@@ -27,7 +27,37 @@
             </g:hasErrors>
             <g:form action="save">
                 <fieldset class="form">
-                    <f:all bean="cash"/>
+                    <fieldset class="embedded " style="float: right; width: 30%;">
+                        <legend>Cierre de caja anterior</legend>
+
+                        <div>
+                            <span><label>- Fecha:</label> ${date}</span>
+                        </div>
+
+                        <div>
+                            <span><label><u>- Cierre de Caja anterior ($):</u></label> ${preCash}</span>
+                        </div>
+
+                        <div>
+                            <span><label>- Monto inicial anterior ($):</label> ${preInitialAmount}</span>
+                        </div>
+
+                        <div>
+                            <span><label>- Gastos anteriores ($):</label> ${preCosts}</span>
+                        </div>
+
+                        <div>
+                            <span><label>- Comentarios: </label> ${comments}</span>
+                        </div>
+
+                    </fieldset>
+
+                    <f:all bean="cash" except="comment"/>
+
+                    <f:field bean="cash" property="comment">
+                        <g:textArea name="comment" rows="3" cols="60"/>
+                    </f:field>
+
                 </fieldset>
                 <fieldset class="buttons">
                     <g:submitButton name="create" class="save" value="${message(code: 'default.button.create.label', default: 'Create')}" />

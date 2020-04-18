@@ -1,5 +1,6 @@
 package aei
 
+import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
 
 import static org.springframework.http.HttpStatus.*
@@ -9,6 +10,7 @@ import grails.transaction.Transactional
 @Secured(['ROLE_ADMIN', 'ROLE_SECRETARIA'])
 class CashController {
 
+    def springSecurityService
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
     def index(Integer max) {
@@ -21,8 +23,13 @@ class CashController {
     }
 
     def create() {
+        def preCashLastID = Cash.last(sort:'id')
+        if(preCashLastID) {
+            def preCashDetails = Cash.read(preCashLastID.id)
+            respond new Cash(params), [model: [date: preCashDetails.dateCreated, preCash: preCashDetails.costs, preInitialAmount: preCashDetails.initalAmount, preCosts: preCashDetails.costs, comments: preCashDetails.comment]]
+        }
         respond new Cash(params)
-    }
+        }
 
     @Transactional
     def save(Cash cash) {
@@ -31,6 +38,8 @@ class CashController {
             notFound()
             return
         }
+
+        cash.user = springSecurityService.currentUser.username
 
         if (cash.hasErrors()) {
             transactionStatus.setRollbackOnly()
