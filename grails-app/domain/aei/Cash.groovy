@@ -10,9 +10,11 @@ class Cash {
     String user
 
     static constraints = {
-        dateCreated(unique:true)
-        user (display:false,nullable:true)
-        total(editable: false,nullable:true)
-        comment(nullable:true)
+        dateCreated(nullable:false, unique:true)
+        initalAmount nullable:false
+        costs nullable:false
+        total nullable:true
+        comment nullable:true
+        user(display:false, nullable:true)
     }
 }

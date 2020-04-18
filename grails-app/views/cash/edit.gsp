@@ -29,7 +29,10 @@
             <g:form resource="${this.cash}" method="PUT">
                 <g:hiddenField name="version" value="${this.cash?.version}" />
                 <fieldset class="form">
-                    <f:all bean="cash"/>
+                    <f:all bean="cash" order="dateCreated,initalAmount,costs,total"/>
+                    <f:field bean="cash" property="comment">
+                        <g:textArea name="comment" rows="3" cols="60"/>
+                    </f:field>
                 </fieldset>
                 <fieldset class="buttons">
                     <input class="save" type="submit" value="${message(code: 'default.button.update.label', default: 'Update')}" />
