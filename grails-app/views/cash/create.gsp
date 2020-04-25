@@ -31,28 +31,59 @@
                         <legend>Cierre de caja anterior</legend>
 
                         <div>
-                            <span><label>- Fecha:</label> ${date}</span>
+                            <span><label>- Fecha:</label> ${preDate}</span>
                         </div>
 
                         <div>
-                            <span><label><u>- Cierre de Caja anterior ($):</u></label> ${preCash}</span>
+                            <span><label>- Monto inicial ($):</label> ${preInitialAmount}</span>
                         </div>
 
                         <div>
-                            <span><label>- Monto inicial anterior ($):</label> ${preInitialAmount}</span>
+                            <span><label>- Gastos ($):</label> ${preCosts}</span>
                         </div>
 
                         <div>
-                            <span><label>- Gastos anteriores ($):</label> ${preCosts}</span>
+                            <span><label>- Retiros ($):</label> ${preWithdraw}</span>
                         </div>
 
                         <div>
-                            <span><label>- Comentarios: </label> ${comments}</span>
+                            <span><label>- Ingresos ($):</label> ${preIncome}</span>
+                        </div>
+
+                        <div>
+                            <span><label><u>- Total Cierre de Caja ($):</u></label> ${preTotal}</span>
+                        </div>
+
+                        <div>
+                            <span><label>- Comentarios: </label> ${preComments}</span>
                         </div>
 
                     </fieldset>
 
-                    <f:all bean="cash" except="comment" order="initalAmount,costs,total"/>
+                    <f:all bean="cash" except="comment,initalAmount,total,income,withdraw,costs"/>
+
+                    <f:field bean="cash" property="initalAmount" required="false">
+                        <g:textField name="initalAmountDisable" value="${initialAmountNew}" disabled="true"/>
+                        <g:hiddenField name="${property}" value="${initialAmountNew}" />
+                    </f:field>
+
+                    <f:field bean="cash" property="costs">
+                        <g:textField name="${property}" value="${value}"/>
+                    </f:field>
+
+                    <f:field bean="cash" property="withdraw">
+                        <g:textField name="${property}" value="${value}"/>
+                    </f:field>
+
+                    <f:field bean="cash" property="income" required="false">
+                        <g:textField name="incomeDisable" value="${income}" disabled="true"/>
+                        <g:hiddenField name="${property}" value="${income}" />
+                    </f:field>
+
+                    <f:field bean="cash" property="total">
+                        <g:textField name="totalDisable" value="" disabled="true"/>
+                        <g:hiddenField name="${property}" value="${income}" />
+                    </f:field>
 
                     <f:field bean="cash" property="comment">
                         <g:textArea name="comment" rows="3" cols="60"/>

@@ -23,12 +23,27 @@ class CashController {
     }
 
     def create() {
-        def preCashLastID = Cash.last(sort:'id')
-        if(preCashLastID) {
-            def preCashDetails = Cash.read(preCashLastID.id)
-            respond new Cash(params), [model: [date: preCashDetails.dateCreated, preCash: preCashDetails.costs, preInitialAmount: preCashDetails.initalAmount, preCosts: preCashDetails.costs, comments: preCashDetails.comment]]
+        def preCashDetails = Cash.last(sort:'id')
+        def listPaymentsToCash = []
+
+        // Buscamos todos los pagos realizados posteriores al último cierre de caja
+        if(preCashDetails) {
+            listPaymentsToCash = Payment.findAllByDateCreatedBetween(preCashDetails.dateCreated, new Date())
+        } else {
+            listPaymentsToCash = Payment.findAll()
         }
-        respond new Cash(params)
+
+        def paymentsToCashTotal = 0
+        for (def payment : listPaymentsToCash) {
+            println(payment.amountPaid)
+            paymentsToCashTotal = paymentsToCashTotal + payment.amountPaid
+        }
+
+        if(preCashDetails) {
+            respond new Cash(params), [model: [preDate: preCashDetails.dateCreated, preInitialAmount: preCashDetails.initalAmount, preCosts: preCashDetails.costs, preIncome: preCashDetails.income, preWithdraw: preCashDetails.withdraw, preTotal: preCashDetails.total, preComments: preCashDetails.comment, initialAmountNew: preCashDetails.total, income: paymentsToCashTotal]]
+        }
+        // Monto del cierre de caja actual
+        respond new Cash(params), [model: [initialAmount:0 , income: paymentsToCashTotal]]
         }
 
     @Transactional
