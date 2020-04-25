@@ -7,13 +7,13 @@ class Cash {
     Double costs
     Double total
     String comment
-    String user
+    User user
 
     static constraints = {
-        dateCreated(nullable:false, unique:true)
+        dateCreated(nullable:false, editable: false,  unique:true)
         initalAmount nullable:false
         costs nullable:false
-        total nullable:true
+        total (nullable:true, editable: false)
         comment nullable:true
         user(display:false, nullable:true)
     }

@@ -18,6 +18,37 @@
             <g:if test="${flash.message}">
                 <div class="message" role="status">${flash.message}</div>
             </g:if>
+
+            <fieldset class="form">
+                <g:form action="index" method="GET">
+                    <div class="fieldcontain">
+                        <label>Desde</label>
+                        <g:datePicker id="dateFrom"
+                                      name="dateFrom"
+                                      value="${params.dateFrom}"
+                                      precision="day"
+                                      />
+                        <label style="display: unset;" >Hasta</label>
+                        <g:datePicker id="dateTo"
+                                      name="dateTo"
+                                      value="${params.dateTo}"
+                                      precision="day"
+                        />
+                        <g:select class="searchSelect"
+                                  id="user"
+                                  name="user"
+                                  from="${aei.User.list()}"
+                                  optionKey="id"
+                                  optionValue="${username}"
+                                  noSelection="['':'Selecciona un usuario']"
+                                  value="${params.user}"
+                        />
+                        <g:submitButton name="search" class="save" style="border-radius: 4px;" value="${message(code: 'default.button.search.label', default: 'Buscar')}" />
+                    </div>
+                </g:form>
+            </fieldset>
+
+
             <f:table collection="${cashList}" />
 
             <div class="pagination">
