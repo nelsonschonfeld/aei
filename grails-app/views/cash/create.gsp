@@ -27,10 +27,68 @@
             </g:hasErrors>
             <g:form action="save">
                 <fieldset class="form">
-                    <f:all bean="cash" order="initalAmount,costs,total"/>
+                    <fieldset class="embedded " style="float: right; width: 30%;">
+                        <legend>Cierre de caja anterior</legend>
+
+                        <div>
+                            <span><label>- Fecha:</label> ${preDate}</span>
+                        </div>
+
+                        <div>
+                            <span><label>- Monto inicial ($):</label> ${preInitialAmount}</span>
+                        </div>
+
+                        <div>
+                            <span><label>- Gastos ($):</label> ${preCosts}</span>
+                        </div>
+
+                        <div>
+                            <span><label>- Retiros ($):</label> ${preWithdraw}</span>
+                        </div>
+
+                        <div>
+                            <span><label>- Ingresos ($):</label> ${preIncome}</span>
+                        </div>
+
+                        <div>
+                            <span><label><u>- Total Cierre de Caja ($):</u></label> ${preTotal}</span>
+                        </div>
+
+                        <div>
+                            <span><label>- Comentarios: </label> ${preComments}</span>
+                        </div>
+
+                    </fieldset>
+
+                    <f:all bean="cash" except="comment,initalAmount,total,income,withdraw,costs"/>
+
+                    <f:field bean="cash" property="initalAmount" required="false">
+                        <g:textField name="initalAmountDisable" value="${initialAmountNew}" disabled="true"/>
+                        <g:hiddenField name="${property}" value="${initialAmountNew}" />
+                    </f:field>
+
+                    <f:field bean="cash" property="costs">
+                        <g:textField name="${property}" value="${value}"/>
+                    </f:field>
+
+                    <f:field bean="cash" property="withdraw">
+                        <g:textField name="${property}" value="${value}"/>
+                    </f:field>
+
+                    <f:field bean="cash" property="income" required="false">
+                        <g:textField name="incomeDisable" value="${income}" disabled="true"/>
+                        <g:hiddenField name="${property}" value="${income}" />
+                    </f:field>
+
+                    <f:field bean="cash" property="total">
+                        <g:textField name="totalDisable" value="" disabled="true"/>
+                        <g:hiddenField name="${property}" value="${income}" />
+                    </f:field>
+
                     <f:field bean="cash" property="comment">
                         <g:textArea name="comment" rows="3" cols="60"/>
                     </f:field>
+
                 </fieldset>
                 <fieldset class="buttons">
                     <g:submitButton name="create" class="save" value="${message(code: 'default.button.create.label', default: 'Create')}" />
