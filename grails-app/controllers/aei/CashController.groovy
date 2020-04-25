@@ -14,8 +14,25 @@ class CashController {
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
     def index(Integer max) {
-        params.max = Math.min(max ?: 10, 100)
-        respond Cash.list(params), model:[cashCount: Cash.count()]
+
+        def user
+        def cashList
+
+        if (params.user) {
+            user = User.findById(params.user)
+            cashList = Cash.findAllWhere(user: user)
+        } else {
+            cashList = Cash.list()
+        }
+
+        if (params.dateFrom) {
+            cashList = cashList.findAll { it.dateCreated >= params.dateFrom }
+        }
+        if (params.dateTo) {
+            cashList = cashList.findAll { it.dateCreated <= params.dateTo.plus(1) }
+        }
+
+        respond cashList, model: [cashCount: Cash.count()]
     }
 
     def show(Cash cash) {
