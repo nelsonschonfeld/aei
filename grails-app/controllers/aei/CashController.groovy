@@ -60,7 +60,7 @@ class CashController {
             respond new Cash(params), [model: [preDate: preCashDetails.dateCreated, preInitialAmount: preCashDetails.initalAmount, preCosts: preCashDetails.costs, preIncome: preCashDetails.income, preWithdraw: preCashDetails.withdraw, preTotal: preCashDetails.total, preComments: preCashDetails.comment, initialAmountNew: preCashDetails.total, income: paymentsToCashTotal]]
         }
         // Monto del cierre de caja actual
-        respond new Cash(params), [model: [initialAmount:0 , income: paymentsToCashTotal]]
+        respond new Cash(params), [model: [initialAmountNew:0 , income: paymentsToCashTotal]]
         }
 
     @Transactional
@@ -71,7 +71,7 @@ class CashController {
             return
         }
 
-        cash.user = springSecurityService.currentUser.username
+        cash.user = springSecurityService.currentUser
 
         if (cash.hasErrors()) {
             transactionStatus.setRollbackOnly()
