@@ -52,7 +52,6 @@ class CashController {
 
         def paymentsToCashTotal = 0
         for (def payment : listPaymentsToCash) {
-            println(payment.amountPaid)
             paymentsToCashTotal = paymentsToCashTotal + payment.amountPaid
         }
 
