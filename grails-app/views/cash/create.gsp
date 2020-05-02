@@ -4,6 +4,16 @@
         <meta name="layout" content="main" />
         <g:set var="entityName" value="${message(code: 'cash.label', default: 'Cash')}" />
         <title><g:message code="default.create.label" args="[entityName]" /></title>
+        <script type="text/javascript">
+            function getAmountReturned() {
+                var initalAmount = parseFloat($('#initalAmount').val())
+                var costs = parseFloat($('#costs').val())
+                var withdraw = parseFloat($('#withdraw').val())
+                var income = parseFloat($('#income').val())
+                $('#total').val(initalAmount - costs - withdraw + income);
+                $('#valueTotal').val($('#total').val());
+            }
+        </script>
     </head>
     <body>
         <a href="#create-cash" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
@@ -16,7 +26,10 @@
         <div id="create-cash" class="content scaffold-create" role="main">
             <h1><g:message code="default.create.label" args="[entityName]" /></h1>
             <g:if test="${flash.message}">
-            <div class="message" role="status">${flash.message}</div>
+                <div class="message" role="status">${flash.message}</div>
+            </g:if>
+            <g:if test="${flash.error}">
+                <div class="errors" role="alert">${flash.error}</div>
             </g:if>
             <g:hasErrors bean="${this.cash}">
             <ul class="errors" role="alert">
@@ -63,26 +76,26 @@
                     <f:all bean="cash" except="comment,initalAmount,total,income,withdraw,costs"/>
 
                     <f:field bean="cash" property="initalAmount" required="false">
-                        <g:textField name="initalAmountDisable" value="${initialAmountNew}" disabled="true"/>
+                        <g:field type="number" min="0" name="initalAmountDisable" value="${initialAmountNew}" required="" id="initialAmountNew" disabled="true"/>
                         <g:hiddenField name="${property}" value="${initialAmountNew}" />
                     </f:field>
 
                     <f:field bean="cash" property="costs">
-                        <g:textField name="${property}" value="${value}"/>
+                        <g:field type="number" min="0" name="${property}" value="${value ? value : 0}" required="" id="costs" onchange="getAmountReturned()"/>
                     </f:field>
 
                     <f:field bean="cash" property="withdraw">
-                        <g:textField name="${property}" value="${value}"/>
+                        <g:field type="number" min="0" name="${property}" value="${value ? value : 0}" required="" id="withdraw" onchange="getAmountReturned()"/>
                     </f:field>
 
                     <f:field bean="cash" property="income" required="false">
-                        <g:textField name="incomeDisable" value="${income}" disabled="true"/>
+                        <g:field type="number" min="0" name="incomeDisable" value="${income}" id="income" required="" disabled="true"/>
                         <g:hiddenField name="${property}" value="${income}" />
                     </f:field>
 
                     <f:field bean="cash" property="total">
-                        <g:textField name="totalDisable" value="" disabled="true"/>
-                        <g:hiddenField name="${property}" value="${income}" />
+                        <g:field type="number" min="0" name="totalDisable" value="${total}" id="total" required="" disabled="true"/>
+                        <g:hiddenField name="${property}" id="valueTotal" value="${total}" />
                     </f:field>
 
                     <f:field bean="cash" property="comment">

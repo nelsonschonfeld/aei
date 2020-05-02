@@ -143,7 +143,7 @@
                 <label>Cuota ($)
                     <span class="required-indicator">*</span>
                 </label>
-                <g:field type="number" name="courseAmount" id="courseAmount"></g:field>
+                <g:field type="number" min="0" name="courseAmount" id="courseAmount"></g:field>
             </div>
 
             <div class="fieldcontain required">

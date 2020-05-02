@@ -210,11 +210,11 @@
             </div>
 
             <f:field bean="payment" property="amountPaid">
-                <g:field type="number" name="amountPaid" id="amountPaid" onchange="getAmountReturned()"/>
+                <g:field type="number" min="0" name="amountPaid" id="amountPaid" onchange="getAmountReturned()"/>
             </f:field>
             <div class="fieldcontain required">
                 <label>Vuelto</label>
-                <g:field type="number" name="amountReturned" id="amountReturned" disabled=""/>
+                <g:field type="number" min="0" name="amountReturned" id="amountReturned" disabled=""/>
                 <g:hiddenField name="valueAmountReturned" id="valueAmountReturned"/>
             </div>
 
