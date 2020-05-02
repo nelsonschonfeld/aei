@@ -3,7 +3,9 @@
     <head>
         <meta name="layout" content="main" />
         <g:set var="entityName" value="${message(code: 'cash.label', default: 'Cash')}" />
+        <r:require module="export"/>
         <title><g:message code="default.list.label" args="[entityName]" /></title>
+        <asset:javascript src="jquery-1.9.1.js"/>
     </head>
     <body>
         <a href="#list-cash" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
@@ -13,6 +15,9 @@
                 <li><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></li>
             </ul>
         </div>
+
+        <export:formats formats="['csv', 'excel', 'pdf']" />
+
         <div id="list-cash" class="content scaffold-list" role="main">
             <h1><g:message code="default.list.label" args="[entityName]" /></h1>
             <g:if test="${flash.message}">
@@ -55,5 +60,19 @@
                 <g:paginate total="${cashCount ?: 0}" />
             </div>
         </div>
+
+        <script type="text/javascript">
+            $('.menuButton a').click(function() {
+                var url = this.href + '&dateFrom_day=' + $('#dateFrom_day').val() +
+                            '&dateFrom_month=' + $('#dateFrom_month').val() +
+                            '&dateFrom_year=' + $('#dateFrom_year').val() +
+                            '&dateTo_day=' + $('#dateTo_day').val() +
+                            '&dateTo_month=' + $('#dateTo_month').val() +
+                            '&dateTo_year=' + $('#dateTo_year').val() +
+                            '&user=' + $('#user').val();
+                window.location.href = url;
+                return false;
+            });
+        </script>
     </body>
 </html>

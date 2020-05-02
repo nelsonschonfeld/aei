@@ -11,6 +11,7 @@ import grails.transaction.Transactional
 class CashController {
 
     def springSecurityService
+    def exportService
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
     def index(Integer max) {
@@ -25,11 +26,31 @@ class CashController {
             cashList = Cash.list()
         }
 
-        if (params.dateFrom) {
-            cashList = cashList.findAll { it.dateCreated >= params.dateFrom }
+        if (params.dateFrom_day && params.dateFrom_month && params.dateFrom_year) {
+            def dateFrom = new GregorianCalendar(params.dateFrom_year.toInteger(), params.dateFrom_month.toInteger() - 1, params.dateFrom_day.toInteger(),0,0,0).time
+            cashList = cashList.findAll { it.dateCreated >= dateFrom }
         }
-        if (params.dateTo) {
-            cashList = cashList.findAll { it.dateCreated <= params.dateTo.plus(1) }
+        
+        if (params.dateTo_day && params.dateTo_month && params.dateTo_year) {
+            def dateTo = new GregorianCalendar(params.dateTo_year.toInteger(), params.dateTo_month.toInteger() - 1, params.dateTo_day.toInteger(),23,59,59).time
+            cashList = cashList.findAll { it.dateCreated <= dateTo }
+        }
+
+        if(params?.f && params.f != "html"){
+            List fields = ["dateCreated", "initalAmount", "costs", "withdraw", "income", "total", "comment", "user"]
+			Map labels = ["dateCreated": g.message(code: 'cash.dateCreated.label'), 
+                            "initalAmount": g.message(code: 'cash.initalAmount.label'),
+                            "costs": g.message(code: 'cash.costs.label'),
+                            "withdraw": g.message(code: 'cash.withdraw.label'),
+                            "income": g.message(code: 'cash.income.label'),
+                            "total": g.message(code: 'cash.total.label'),
+                            "comment": g.message(code: 'cash.comment.label'),
+                            "user": g.message(code: 'cash.user.label')]
+
+            response.contentType = grailsApplication.config.grails.mime.types[params.f]
+            response.setHeader("Content-disposition", "attachment; filename=cash.${params.extension}")
+
+            exportService.export(params.f, response.outputStream, cashList, fields, labels, [:], [:])
         }
 
         respond cashList, model: [cashCount: Cash.count()]
