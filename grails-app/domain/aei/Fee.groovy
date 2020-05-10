@@ -6,7 +6,7 @@ import groovy.transform.AutoClone
 
 @AutoClone
 class Fee {
-    String id
+    Integer id
     String identificationCode
     Inscription inscription
     Course course
@@ -50,17 +50,17 @@ class Fee {
         amountFirstExpiredDate(nullable: true)
         firstExpiredDate(nullable: false)
         amountSecondExpiredDate(nullable: true)
-        comment(nullable:true)
+        comment(nullable: true)
         secondExpiredDate(nullable: false)
         status(nullable: false)
-        updatedByUser(display:false, nullable:true)
+        updatedByUser(display: false, nullable: true)
     }
 
     static mapping = {
-        id generator: 'assigned'
+        id(generator: 'org.hibernate.id.enhanced.SequenceStyleGenerator', params: [sequence_name: 'start_seq', initial_value: 10000])
     }
 
-    String toString(){
+    String toString() {
         return id
     }
 }

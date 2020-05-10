@@ -200,11 +200,11 @@ class FeeController {
         for (String student : Eval.me(params.studentsInscriptos.toString())) {
             def newFee = fee.clone()
             try {
-                newFee.id = params.inscriptionsSelect + ' ' + student + ' ' + newFee.month
-                double random = Math.random()
-                String doubleAsString = String.valueOf(random);
-                int indexOfDecimal = doubleAsString.indexOf(".");
-                def identificationCode = doubleAsString.substring(indexOfDecimal + 1).toBigInteger()
+                def lastFee = Fee.last()
+                def identificationCode = "10000"
+                if (lastFee){
+                    identificationCode = Integer.toString(lastFee.id + 1)
+                }
                 newFee.identificationCode = identificationCode
                 def inscriptionObject = Inscription.get(params.inscriptionsSelect)
                 newFee.inscription = inscriptionObject

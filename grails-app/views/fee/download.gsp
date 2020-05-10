@@ -31,7 +31,7 @@ $(document).ready(function(){
             doc.addPage();
         }
         JsBarcode("#barcode"+element.identificationCode, element.identificationCode, {
-            format: "CODE39",
+            format: "CODE128",
             lineColor: "#000",
             width: 1,
             height: 25,
