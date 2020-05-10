@@ -45,7 +45,9 @@
                     <%-- <f:all bean="fee" except="inscription, course,student,amount,amountPaid, amountFull, discountAmount,inscriptionCost,testCost,printCost, status, extraCost"/> --%>
                 </fieldset>
                 <fieldset class="buttons">
-                    <input class="save" type="submit" value="${message(code: 'default.button.reprint.label', default: 'Update')}" />
+                    <g:if test="${this.fee.status == enums.FeeStatusEnum.Iniciado || this.fee.status == enums.FeeStatus.Enum.Parcial}">
+                        <input class="save" type="submit" value="${message(code: 'default.button.reprint.label', default: 'Update')}" />
+                    </g:if>
                 </fieldset>
             </g:form>
         </div>
