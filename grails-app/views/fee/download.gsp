@@ -48,11 +48,14 @@ $(document).ready(function(){
             }
             doc.addImage(jpegUrl, 'JPEG', 30+x, 0+y);
             doc.setFontSize(12);
-            doc.text(30+x, 30+y, $("#student"+element.identificationCode).text());
-            doc.text(30+x, 40+y, $("#descBill"+element.identificationCode).text());
-            doc.text(30+x, 50+y, $("#hours"+element.identificationCode).text());
-            doc.text(30+x, 60+y, $("#firstExpirationDate"+element.identificationCode).text());
-            doc.text(30+x, 70+y, $("#secondExpirationDate"+element.identificationCode).text());
+            doc.text(30+x, 30+y, "Alumno: "+$("#student"+element.identificationCode).text());
+            doc.text(30+x, 35+y, "Curso: "+$("#course"+element.identificationCode).text());
+            doc.text(30+x, 45+y, "Descuento(%): "+$("#descBill"+element.identificationCode).text());
+            doc.text(30+x, 50+y, "Costo impresión: "+$("#printCost"+element.identificationCode).text());
+            doc.text(30+x, 55+y, "Total a pagar: "+$("#totalBill"+element.identificationCode).text());
+            doc.text(30+x, 60+y, "Hasta: "+$("#firstExpirationDate"+element.identificationCode).text());
+            doc.text(30+x, 70+y, "Total a pagar: "+$("#amountFirstExpiredDate"+element.identificationCode).text());
+            doc.text(30+x, 75+y, "Hasta:"+$("#secondExpirationDate"+element.identificationCode).text());
         }
 
         // sección vertical eje y igual
@@ -73,10 +76,13 @@ $(document).ready(function(){
 <g:each var="bill" in="${this.pdf}">
     <canvas id="barcode${bill.identificationCode}" style="display: none"></canvas>
     <p id="student${bill.identificationCode}" style="display: none">${bill.student.surname} ${bill.student.name}</p>
+    <p id="course${bill.identificationCode}" style="display: none">${bill.course}</p>
     <p id="descBill${bill.identificationCode}" style="display: none">${bill.discountAmount}</p>
-    <p id="hours${bill.identificationCode}" style="display: none">HORARIO DE COBRO: 14:00 a 20:30 - Lunes a Viernes</p>
-    <p id="firstExpirationDate${bill.identificationCode}" style="display: none">${bill.firstExpiredDate}</p>
-    <p id="secondExpirationDate${bill.identificationCode}" style="display: none">${bill.secondExpiredDate}</p>
+    <p id="printCost${bill.identificationCode}" style="display: none">${bill.printCost}</p>
+    <p id="totalBill${bill.identificationCode}" style="display: none">${bill.amountFull}</p>
+    <p id="amountFirstExpiredDate${bill.identificationCode}" style="display: none">${bill.amountFirstExpiredDate}</p>
+    <p id="firstExpirationDate${bill.identificationCode}" style="display: none"><g:formatDate date="${bill.firstExpiredDate}" type="date"/></p>
+    <p id="secondExpirationDate${bill.identificationCode}" style="display: none"><g:formatDate date="${bill.secondExpiredDate}" type="date"/></p>
 </g:each>
 
 </body>

@@ -315,8 +315,12 @@ class FeeController {
         //     fee.status = FeeStatusEnum.Parcial
         // }
 
-        // Por default se le va sumando el valor de reimpresion
-        fee.printCost = Course.findById(fee.course).printCost + fee.printCost
+        // Actualizo valores con costos de reimpresión
+        def coursePrintCost = Course.findById(fee.course).printCost
+        fee.printCost = coursePrintCost + fee.printCost
+        fee.amountFull = fee.amountFull + coursePrintCost
+        fee.amountFirstExpiredDate = fee.amountFirstExpiredDate + coursePrintCost
+        fee.amountSecondExpiredDate = fee.amountSecondExpiredDate + coursePrintCost
 
         fee.updatedByUser = springSecurityService.currentUser.username
         fee.save flush: true

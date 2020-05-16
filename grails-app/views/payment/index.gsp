@@ -46,7 +46,7 @@
     </g:form>
     </fieldset>
 
-        <export:formats formats="['csv', 'excel', 'pdf']" />
+        <export:formats formats="['excel', 'pdf']" />
 
         <div id="list-payment" class="content scaffold-list" role="main">
             <h1><g:message code="default.list.label" args="[entityName]" /></h1>
