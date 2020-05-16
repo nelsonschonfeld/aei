@@ -1,6 +1,7 @@
 package aei
 
 import enums.FeeStatusEnum
+import enums.Months
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
 
@@ -173,25 +174,13 @@ class FeeController {
             notFound()
             return
         }
-        //validacion Cursos
-        if (params.inscriptionsSelect == null || params.inscriptionsSelect == "0" || params.inscriptionsSelect == 0) {
-            flash.error = "Debe seleccionar el Curso Inscripto."
+
+        //All params validations
+        String errorMesagge = validate(params)
+        if (errorMesagge) {
+            flash.error = errorMesagge
             respond fee, view: 'create'
             return
-        }
-        //validacion alumnos
-        if (params.studentsInscriptos == null || params.studentsInscriptos == [] || params.studentsInscriptos.size() == 0) {
-            flash.error = "Debe seleccionar el o los Alumnos"
-            respond fee, view: 'create'
-            return
-        }
-        //validacion cuota para cuando no posee costo de inscripcion
-        if ((params.courseAmount == null || params.courseAmount == "" || params.courseAmount == 0) && (!params.checkCourseInscriptionCost || !params._checkCourseTestCost || !params._checkCourseTestCost)) {
-            if (!params.checkCourseInscriptionCost) {
-                flash.error = "La Cuota no puede ser vacio o cero"
-                respond fee, view: 'create'
-                return
-            }
         }
 
         def pdfData = []
@@ -265,12 +254,21 @@ class FeeController {
                     return
                 }
 
-                pdfData.add(newFee)
+                //Validation for duplicated fee in the same month and year
+                def duplicateFee = Fee.findWhere(student: newFee.student, course: newFee.course, month: newFee.month, year: newFee.year)
 
+                if (duplicateFee) {
+                    flash.error = "La Cuota para el ALUMNO: ${student} y el MES: ${newFee.month} ya se genero anteriormente."
+                    respond newFee, view: 'create'
+                    return
+                }
+
+                pdfData.add(newFee)
                 newFee.save flush: true
+
             } catch (Exception e) {
                 transactionStatus.setRollbackOnly()
-                flash.error = "La Cuota para el ALUMNO: ${student} y el MES: ${newFee.month} ya se genero anteriormente."
+                flash.error = "No se pudo generar la cuota. Intente nuevamente."
                 respond newFee, view: 'create'
                 return
             }
@@ -368,6 +366,66 @@ class FeeController {
             }
             '*' { render status: NOT_FOUND }
         }
+    }
+
+    /** Validations for fee params */
+
+    String validate(def params) {
+
+        String message = null
+
+        //validacion Cursos
+        if (params.inscriptionsSelect == null || params.inscriptionsSelect == "0" || params.inscriptionsSelect == 0) {
+            message = "Debe seleccionar el Curso Inscripto"
+            return message
+        }
+        //validacion alumnos
+        if (params.studentsInscriptos == null || params.studentsInscriptos == [] || params.studentsInscriptos.size() == 0) {
+            message = "Debe seleccionar el o los Alumnos"
+            return message
+        }
+        //validacion cuota para cuando no posee costo de inscripcion
+        if ((params.courseAmount == null || params.courseAmount == "" || params.courseAmount == 0) && (!params.checkCourseInscriptionCost || !params._checkCourseTestCost || !params._checkCourseTestCost)) {
+            if (!params.checkCourseInscriptionCost) {
+                message = "La Cuota no puede ser vacio o cero"
+                return message
+            }
+        }
+
+        /* Due dates validations */
+
+        def today = new Date().format( 'yyyy-MM-dd' )
+        def firstDate = params.firstExpiredDate.format( 'yyyy-MM-dd' )
+        def secondDate = params.secondExpiredDate.format( 'yyyy-MM-dd' )
+
+        if (firstDate <= today) {
+            message = "La fecha del primer vencimiento debe ser mayor al día de hoy"
+            return message
+        }
+
+        if (secondDate <= today) {
+            message = "La fecha del segundo vencimiento debe ser mayor al día de hoy"
+            return message
+        }
+
+        if (secondDate <= firstDate) {
+            message = "La fecha del segundo vencimiento debe ser mayor a la fecha del primer vencimiento"
+            return message
+        }
+
+        if (params.firstExpiredDate.getMonth() != Months.valueOf(params.month).ordinal() ||
+                params.firstExpiredDate.format( 'yyyy' ) != params.courseYear) {
+            message = "La fecha del primer vencimiento debe ser del mismo mes y año de la cuota que intenta generar"
+            return message
+        }
+
+        if (params.secondExpiredDate.getMonth() != Months.valueOf(params.month).ordinal() ||
+                params.secondExpiredDate.format( 'yyyy' ) != params.courseYear) {
+            message = "La fecha del segundo vencimiento debe ser del mismo mes y año de la cuota que intenta generar"
+            return message
+        }
+
+        return message
     }
 
     /*@Secured(['ROLE_ADMIN', 'ROLE_SECRETARIA'])
