@@ -23,7 +23,7 @@
             <f:display bean="fee" />
             <g:form resource="${this.fee}" method="DELETE">
                 <fieldset class="buttons">
-                    <g:if test="${this.fee.status == enums.FeeStatusEnum.Iniciado || this.fee.status == enums.FeeStatus.Enum.Parcial}">
+                    <g:if test="${this.fee.status == enums.FeeStatusEnum.Iniciado || this.fee.status == enums.FeeStatusEnum.Parcial}">
                         <g:link class="edit" action="edit" resource="${this.fee}"><g:message code="default.button.reprint.label" default="Edit" /></g:link>
                     </g:if>
                     <g:if test="${this.fee.status == enums.FeeStatusEnum.Iniciado}">
