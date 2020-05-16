@@ -4,34 +4,33 @@
 
 <span id="loginLink" style="position: relative; margin-right: 30px; float: right">
     <sec:ifLoggedIn>
-        Logged in as <sec:username/> (<g:link elementId='logout' controller='logout'>Logout</g:link>)
+        Usuario Logueado: <u><b><sec:username/></b></u>
+        <br>
+        <g:link elementId='logout' controller='logout'> Salir</g:link>
     </sec:ifLoggedIn>
-    <sec:ifNotLoggedIn>
-        <a href="#" onclick="showLogin(); return false;">Login</a>
-    </sec:ifNotLoggedIn>
 </span>
 
 <div id="ajaxLogin" class="jqmWindow" style="z-index: 3000;">
     <div class="inner">
-        <div class="fheader">Please Login..</div>
+        <div class="fheader">Por favor identíficate</div>
         <form action="${request.contextPath}/login/authenticate" method="POST"
               id="ajaxLoginForm" name="ajaxLoginForm" class="cssform" autocomplete="off">
             <p>
-                <label for="username">Username:</label>
+                <label for="username">Nombre de usuario:</label>
                 <input type="text" class="text_" name="username" id="username" />
             </p>
             <p>
-                <label for="password">Password</label>
+                <label for="password">Contraseña:</label>
                 <input type="password" class="text_" name="password" id="password" />
             </p>
             <p>
-                <label for="remember_me">Remember me</label>
+                <label for="remember_me">Recuérdame</label>
                 <input type="checkbox" class="chk" id="remember_me" name="remember-me"/>
             </p>
             <p>
                 <input type="submit" id="authAjax" name="authAjax"
-                       value="Login" class="ajaxLoginButton" />
-                <input type="button" id="cancelLogin" value="Cancel"
+                       value="Identifícate" class="ajaxLoginButton" />
+                <input type="button" id="cancelLogin" value="Cancelar"
                        class="ajaxLoginButton" />
             </p>
         </form>

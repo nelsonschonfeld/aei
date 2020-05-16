@@ -37,33 +37,63 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                            aria-expanded="false">Usuarios <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="/user/index">Crear Usuarios</a></li>
-                            <li><a href="/role/index">Listar Roles</a></li>
-                            <li><a href="/userRole/index">Asignar Roles</a></li>
+                            <li><a href="/user/index">Usuarios</a></li>
+                            <li><a href="/userRole/index">Perfiles Asignados</a></li>
                         </ul>
                     </li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                            aria-expanded="false">Personas <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="#">Crear</a></li>
-                            <li><a href="#">Listar</a></li>
+                            <li><a href="/person/index">Personas</a></li>
+                            <li><a href="/person/create">Crear Persona</a></li>
                         </ul>
                     </li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                            aria-expanded="false">Cursos <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="#">Crear</a></li>
-                            <li><a href="#">Listar</a></li>
+                            <li><a href="/course/index">Cursos</a></li>
+                            <li><a href="/course/create">Crear Curso</a></li>
                         </ul>
                     </li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                            aria-expanded="false">Inscripciones <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="#">Crear</a></li>
-                            <li><a href="#">Listar</a></li>
+                            <li><a href="/inscription/index">Inscripciones</a></li>
+                            <li><a href="/inscription/create">Crear Inscripción</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false">Cuotas <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/fee/index">Cuotas</a></li>
+                            <li><a href="/fee/create">Generar Cuotas</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false">Pagos <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/payment/index">Pagos</a></li>
+                            <li><a href="/payment/create">Generar Pago</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false">Cierre de caja<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/cash/index">Cierres de caja</a></li>
+                            <li><a href="/cash/create">Generar Cerrar caja</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false">Sistema <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/system/export">Generar backup</a></li>
                         </ul>
                     </li>
                 </div>
