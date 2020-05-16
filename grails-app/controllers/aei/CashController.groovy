@@ -69,7 +69,7 @@ class CashController {
             listPaymentsToCash = Payment.findAll()
         }
 
-        def paymentsToCashTotal = 0
+        def paymentsToCashTotal = 0.0
         for (def payment : listPaymentsToCash) {
             paymentsToCashTotal = paymentsToCashTotal + payment.amountPaid
         }
@@ -130,6 +130,12 @@ class CashController {
             respond cash.errors, view:'create'
             return
         }
+
+        cash.initalAmount =  Double.parseDouble(params.initalAmount)
+        cash.costs =  Double.parseDouble(params.costs)
+        cash.total =  Double.parseDouble(params.total)
+        cash.withdraw =  Double.parseDouble(params.withdraw)
+        cash.income =  Double.parseDouble(params.income)
 
         cash.save flush:true
 
