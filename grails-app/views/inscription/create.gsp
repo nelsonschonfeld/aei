@@ -1,3 +1,4 @@
+<%@ page import="enums.CourseStatusEnum" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -75,7 +76,7 @@
                     <g:select
                             id="course"
                             name="course"
-                            from="${aei.Course.list()}"
+                            from="${aei.Course.list().findAll { course -> course.status.equals(enums.CourseStatusEnum.Abierto) }}"
                             optionKey="id"
                             optionValue="id"
                             />

@@ -125,7 +125,8 @@
                         class="select-basic-single"
                         id="inscriptionsSelect"
                         name="inscriptionsSelect"
-                        from="${aei.Inscription.list().unique { courseIns -> courseIns.course }}"
+
+                        from="${aei.Inscription.list().findAll { courseIns -> courseIns.course?.status?.equals(enums.CourseStatusEnum.Abierto) }.unique()}"
                         optionKey="id"
                         optionValue="courseId"
                         noSelection="['0': 'Cursos Inscriptos']"
