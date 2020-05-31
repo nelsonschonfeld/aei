@@ -413,14 +413,17 @@ class FeeController {
             return message
         }
 
-        if (params.firstExpiredDate.getMonth() != Months.valueOf(params.month).ordinal() ||
-                params.firstExpiredDate.format( 'yyyy' ) != params.courseYear) {
+        if (params.firstExpiredDate.format( 'yyyy' ) != params.courseYear) {
+            message = "La fecha del primer vencimiento debe ser del mismo año del curso"
+            return message
+        }
+
+        if (params.firstExpiredDate.getMonth() != Months.valueOf(params.month).ordinal()) {
             message = "La fecha del primer vencimiento debe ser del mismo mes y año de la cuota que intenta generar"
             return message
         }
 
-        if (params.secondExpiredDate.getMonth() != Months.valueOf(params.month).ordinal() ||
-                params.secondExpiredDate.format( 'yyyy' ) != params.courseYear) {
+        if (params.secondExpiredDate.getMonth() != Months.valueOf(params.month).ordinal()) {
             message = "La fecha del segundo vencimiento debe ser del mismo mes y año de la cuota que intenta generar"
             return message
         }

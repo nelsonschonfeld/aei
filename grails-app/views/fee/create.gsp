@@ -126,7 +126,7 @@
                         id="inscriptionsSelect"
                         name="inscriptionsSelect"
 
-                        from="${aei.Inscription.list().findAll { courseIns -> courseIns.course?.status?.equals(enums.CourseStatusEnum.Abierto) }.unique()}"
+                        from="${aei.Inscription.list().findAll { courseIns -> courseIns.course?.status?.equals(enums.CourseStatusEnum.Abierto) && courseIns.course?.year >= new Date().format( 'yyyy' )}.unique()}"
                         optionKey="id"
                         optionValue="courseId"
                         noSelection="['0': 'Cursos Inscriptos']"
