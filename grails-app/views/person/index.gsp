@@ -31,7 +31,7 @@
                     </div>
                 </g:form>
             </fieldset>
-            <f:table collection="${personList}" />
+            <f:table collection="${personList}" properties="['dni','name','surname','address','cellphone','email','telephone','dateCreated']"/>
 
                 <div class="pagination">
                     <g:paginate total="${personCount ?: 0}" />

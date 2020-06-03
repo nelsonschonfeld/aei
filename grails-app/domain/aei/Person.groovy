@@ -26,9 +26,9 @@ class Person {
         dni(nullable:false, unique:true, matches:'\\d{7,10}')
         name(nullable:false)
         surname(nullable:false)
-        email(nullable:false, email:true)
         address(nullable:false)
         cellphone(nullable:false, matches:'\\d{9,15}')
+        email(nullable:true, email:true)
         telephone(nullable:true, matches:'\\d{7,15}')
         birthDate(nullable:false)
         birthPlace(nullable:true)
@@ -37,8 +37,8 @@ class Person {
         type(nullable:false)
         comment(nullable:true)
         updatedByUser(display:false, nullable:true)
-        dateCreated display:false
-        lastUpdated display:false
+        dateCreated(display:true)
+        lastUpdated(display:false)
     }
 
     String toString(){

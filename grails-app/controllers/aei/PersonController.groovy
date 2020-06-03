@@ -27,14 +27,15 @@ class PersonController {
         }
 
         if(params?.f && params.f != "html"){
-            List fields = ["dni", "name", "surname", "email", "address", "cellphone", "telephone"]
+            List fields = ["dni", "name", "surname", "email", "address", "cellphone", "telephone", "dateCreated"]
 			Map labels = ["dni": g.message(code: 'person.dni.label'), 
                             "name": g.message(code: 'person.name.label'),
                             "surname": g.message(code: 'person.surname.label'),
                             "email": g.message(code: 'person.email.label'),
                             "address": g.message(code: 'person.address.label'),
                             "cellphone": g.message(code: 'person.cellphone.label'),
-                            "telephone": g.message(code: 'person.telephone.label')]
+                            "telephone": g.message(code: 'person.telephone.label'),
+                            "dateCreated": g.message(code: 'person.dateCreated.label')]
 
             response.contentType = grailsApplication.config.grails.mime.types[params.f]
             response.setHeader("Content-disposition", "attachment; filename=people.${params.extension}")

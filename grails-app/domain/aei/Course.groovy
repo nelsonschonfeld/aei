@@ -12,7 +12,6 @@ class Course {
     String schedule
     Double amount
     Double firstDueCost
-    Double secondDueCost
     Double inscriptionCost
     Double testCost
     Long printCost
@@ -34,7 +33,6 @@ class Course {
         teacher(nullable: false)
         amount(nullable: false)
         firstDueCost(nullable: false)
-        secondDueCost(nullable: false)
         inscriptionCost(nullable: false)
         testCost(nullable: false)
         printCost(nullable: false)

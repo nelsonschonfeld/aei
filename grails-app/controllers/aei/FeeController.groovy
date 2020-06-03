@@ -238,15 +238,13 @@ class FeeController {
 
                 //caso de registramos solo la inscripción
                 def courseFirstDueCost = course.firstDueCost
-                def courseSecondDueCost = course.secondDueCost
                 if (isInscriptionWithoutFee) {
                     courseFirstDueCost = 0
-                    courseSecondDueCost = 0
                 }
                 def totalToPaidFirst = (courseFirstDueCost + newFee.inscriptionCost + newFee.printCost + (newFee.testCost / 2))
                 newFee.amountFirstExpiredDate = newFee.extraCost + amountToPaid + totalToPaidFirst
 
-                def totalToPaidSecond = (courseSecondDueCost + newFee.inscriptionCost + newFee.printCost + (newFee.testCost / 2))
+                def totalToPaidSecond = (newFee.inscriptionCost + newFee.printCost + (newFee.testCost / 2))
                 newFee.amountSecondExpiredDate = newFee.extraCost + amountToPaid + totalToPaidSecond
                 if (newFee.hasErrors()) {
                     transactionStatus.setRollbackOnly()
