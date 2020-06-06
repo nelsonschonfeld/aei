@@ -31,7 +31,9 @@ class FeeController {
     }
 
     def index(Integer max) {
-        params.max = Math.min(max ?: 10, 100)
+        if(!params?.f) {
+            params.max = Math.min(max ?: 20, 100)
+        }
 
         def course
         def student

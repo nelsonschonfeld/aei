@@ -21,7 +21,7 @@
     }
 $(document).ready(function(){
     var fillList = parseModelToJS('${pdf as JSON}');
-    var doc = new jsPDF('landscape');
+    var doc = new jsPDF({orientation: 'landscape', format: 'legal'});
     var bill = 1;
     var y = 0;
     var x = 0;
@@ -39,32 +39,69 @@ $(document).ready(function(){
         });
 
         var jpegUrl = ($("#barcode"+element.identificationCode)[0]).toDataURL("image/jpeg");
+           
+        //1er cuota (instituto)
+        doc.addImage(jpegUrl, 'JPEG', 75+x, 10);
+        doc.setFontSize(12);
+        //alumno - curso
+        doc.text(50+x, 35, $("#student"+element.identificationCode).text() + ' - ' + $("#course"+element.identificationCode).text());
+        doc.setFontSize(11);
+        //detalle
+        doc.text(50+x, 45, 'Cuota ' + $("#month"+element.identificationCode).text() + ' ' + $("#year"+element.identificationCode).text());
+        doc.text(100+x, 45, 'Cuota pura: ' + $("#amount"+element.identificationCode).text());
+        //horario cobro
+        doc.text(50+x, 50, 'Horario de cobro: Lunes a viernes de 14:30 a 19:00');
+        //comments
+        doc.text(30+x, 55, 'Observaciones:');
+        doc.text(30+x, 60, $("#comment"+element.identificationCode).text());
+        //a cuenta y saldo labels
+        doc.text(30+x, 70, 'A cuenta:');
+        doc.text(30+x, 75, 'Saldo:');
+        //descuento %
+        doc.text(120+x, 70, "Descuento(%): "+$("#descBill"+element.identificationCode).text());
+        //costo impresion
+        doc.text(120+x, 75, "Costo impresión: "+$("#printCost"+element.identificationCode).text());
+        //1er vencimiento
+        doc.text(120+x, 80, '1er venc. ' + $("#firstExpirationDate"+element.identificationCode).text() + ' ' + $("#totalBill"+element.identificationCode).text());
+        //2do vencimiento
+        doc.text(120+x, 88, '2do venc. ' + $("#secondExpirationDate"+element.identificationCode).text() + ' ' + $("#amountFirstExpiredDate"+element.identificationCode).text());
 
-        for (var i=1; i<=2; i++) { // va duplicado
-            if (i == 2) { // si es el duplicado incremento eje y
-                y = 90;
-            } else {
-                y = 0;
-            }
-            doc.addImage(jpegUrl, 'JPEG', 30+x, 0+y);
-            doc.setFontSize(12);
-            doc.text(30+x, 30+y, "Alumno: "+$("#student"+element.identificationCode).text());
-            doc.text(30+x, 35+y, "Curso: "+$("#course"+element.identificationCode).text());
-            doc.text(30+x, 45+y, "Descuento(%): "+$("#descBill"+element.identificationCode).text());
-            doc.text(30+x, 50+y, "Costo impresión: "+$("#printCost"+element.identificationCode).text());
-            doc.text(30+x, 55+y, "Total a pagar: "+$("#totalBill"+element.identificationCode).text());
-            doc.text(30+x, 60+y, "Hasta: "+$("#firstExpirationDate"+element.identificationCode).text());
-            doc.text(30+x, 70+y, "Total a pagar: "+$("#amountFirstExpiredDate"+element.identificationCode).text());
-            doc.text(30+x, 75+y, "Hasta:"+$("#secondExpirationDate"+element.identificationCode).text());
-        }
+        //2da cuota (alumno)
+        doc.setFontSize(12);
+        //alumno - curso
+        doc.text(50+x, 145, $("#student"+element.identificationCode).text() + ' - ' + $("#course"+element.identificationCode).text());
+        doc.setFontSize(11);
+        //detalle
+        doc.text(50+x, 155, 'Cuota ' + $("#month"+element.identificationCode).text() + ' ' + $("#year"+element.identificationCode).text());
+        doc.text(100+x, 155, 'Cuota pura: ' + $("#amount"+element.identificationCode).text());
+        //comments
+        doc.text(30+x, 165, 'Observaciones:');
+        doc.text(30+x, 170, $("#comment"+element.identificationCode).text());
+        //a cuenta y saldo labels
+        doc.text(30+x, 180, 'A cuenta:');
+        doc.text(30+x, 185, 'Saldo:');
+        //descuento %
+        doc.text(120+x, 180, "Descuento(%): "+$("#descBill"+element.identificationCode).text());
+        //costo impresion
+        doc.text(120+x, 185, "Costo impresión: "+$("#printCost"+element.identificationCode).text());
+        //1er vencimiento
+        doc.text(120+x, 190, '1er venc. ' + $("#firstExpirationDate"+element.identificationCode).text() + ' ' + $("#totalBill"+element.identificationCode).text());
+        //2do vencimiento
+        doc.text(120+x, 198, '2do venc. ' + $("#secondExpirationDate"+element.identificationCode).text() + ' ' + $("#amountFirstExpiredDate"+element.identificationCode).text());
+
 
         // sección vertical eje y igual
-        doc.text(10+x, 60, $("#student"+element.identificationCode).text(), null, 90);
+        //alumno - segment
+        doc.text(12+x, 195, $("#student"+element.identificationCode).text() + ' - ' + $("#course"+element.identificationCode).text(), null, 90);
+        //1er vencimiento
+        doc.text(12+x, 120, '1er venc. ' + $("#firstExpirationDate"+element.identificationCode).text() + ' ' + $("#totalBill"+element.identificationCode).text(), null, 90);
+        //2do vencimiento
+        doc.text(12+x, 60, '2do venc. ' + $("#secondExpirationDate"+element.identificationCode).text() + ' ' + $("#amountFirstExpiredDate"+element.identificationCode).text(), null, 90);
 
         if (bill%2 === 0) { // si es par reinicio el eje x
             x = 0;
         } else {
-            x = 150;
+            x = 170;
         }
         bill = bill + 1;
     });
@@ -77,10 +114,14 @@ $(document).ready(function(){
     <canvas id="barcode${bill.identificationCode}" style="display: none"></canvas>
     <p id="student${bill.identificationCode}" style="display: none">${bill.student.surname} ${bill.student.name}</p>
     <p id="course${bill.identificationCode}" style="display: none">${bill.course}</p>
-    <p id="descBill${bill.identificationCode}" style="display: none">${bill.discountAmount}</p>
-    <p id="printCost${bill.identificationCode}" style="display: none">${bill.printCost}</p>
-    <p id="totalBill${bill.identificationCode}" style="display: none">${bill.amountFull}</p>
-    <p id="amountFirstExpiredDate${bill.identificationCode}" style="display: none">${bill.amountFirstExpiredDate}</p>
+    <p id="month${bill.identificationCode}" style="display: none">${bill.month}</p>
+    <p id="year${bill.identificationCode}" style="display: none">${bill.year}</p>
+    <p id="comment${bill.identificationCode}" style="display: none">${bill.comment}</p>
+    <p id="descBill${bill.identificationCode}" style="display: none"><g:formatNumber number="${bill.discountAmount}" type="number" maxFractionDigits="0"/></p>
+    <p id="printCost${bill.identificationCode}" style="display: none"><g:formatNumber number="${bill.printCost}" type="number" maxFractionDigits="0"/></p>
+    <p id="amount${bill.identificationCode}" style="display: none"><g:formatNumber number="${bill.amount}" type="number" maxFractionDigits="0"/></p>
+    <p id="totalBill${bill.identificationCode}" style="display: none"><g:formatNumber number="${bill.amountFull}" type="number" maxFractionDigits="0"/></p>
+    <p id="amountFirstExpiredDate${bill.identificationCode}" style="display: none"><g:formatNumber number="${bill.amountFirstExpiredDate}" type="number" maxFractionDigits="0"/></p>
     <p id="firstExpirationDate${bill.identificationCode}" style="display: none"><g:formatDate date="${bill.firstExpiredDate}" type="date"/></p>
     <p id="secondExpirationDate${bill.identificationCode}" style="display: none"><g:formatDate date="${bill.secondExpiredDate}" type="date"/></p>
 </g:each>

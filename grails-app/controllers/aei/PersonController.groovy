@@ -14,8 +14,10 @@ class PersonController {
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
     def index(Integer max) {
-        params.max = Math.min(max ?: 20, 100)
-
+        if(!params?.f) {
+            params.max = Math.min(max ?: 20, 100)
+        }
+        
         def personList = Person.createCriteria().list (params) {
             if ( params.query ) {
                 or {
