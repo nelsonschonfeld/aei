@@ -46,7 +46,7 @@ $(document).ready(function(){
         let bill2 = '2do venc. ' + $("#secondExpirationDate"+element.identificationCode).text() + ': $' + $("#amountFirstExpiredDate"+element.identificationCode).text();
         let detail = 'Cuota ' + $("#month"+element.identificationCode).text() + ' ' + $("#year"+element.identificationCode).text();
         let detail2 = 'Cuota pura: $' + $("#amount"+element.identificationCode).text();
-        let balance = 'Saldo: $' + $("#balance"+element.identificationCode).text();
+        //let balance = 'Saldo: $' + $("#balance"+element.identificationCode).text();
         let discount = "Descuento(%): "+$("#descBill"+element.identificationCode).text();
         let printAmount = "Costo impresión: $"+$("#printCost"+element.identificationCode).text();
 
@@ -67,8 +67,8 @@ $(document).ready(function(){
         doc.text(30+x, 55, 'Observaciones:');
         doc.text(30+x, 60, $("#comment"+element.identificationCode).text());
         //a cuenta y saldo labels
-        //doc.text(30+x, 70, 'A cuenta:');
-        doc.text(30+x, 75, balance);
+        doc.text(30+x, 70, 'A cuenta:');
+        doc.text(30+x, 75, 'Saldo:');
         //descuento %
         doc.text(120+x, 70, discount);
         //costo impresion
@@ -92,8 +92,8 @@ $(document).ready(function(){
         doc.text(30+x, 165, 'Observaciones:');
         doc.text(30+x, 170, $("#comment"+element.identificationCode).text());
         //a cuenta y saldo labels
-        //doc.text(30+x, 180, 'A cuenta:');
-        doc.text(30+x, 185, balance);
+        doc.text(30+x, 180, 'A cuenta:');
+        doc.text(30+x, 185, 'Saldo:');
         //descuento %
         doc.text(120+x, 180, discount);
         //costo impresion
@@ -137,7 +137,7 @@ $(document).ready(function(){
     <p id="printCost${bill.identificationCode}" style="display: none"><g:formatNumber number="${bill.printCost}" type="number" maxFractionDigits="0"/></p>
     <p id="amount${bill.identificationCode}" style="display: none"><g:formatNumber number="${bill.amount}" type="number" maxFractionDigits="0"/></p>
     <p id="totalBill${bill.identificationCode}" style="display: none"><g:formatNumber number="${bill.amountFull}" type="number" maxFractionDigits="0"/></p>
-    <p id="balance${bill.identificationCode}" style="display: none"><g:formatNumber number="${bill.amountFull - bill.amount - bill.printCost}" type="number" maxFractionDigits="0"/></p>
+    <%-- <p id="balance${bill.identificationCode}" style="display: none"><g:formatNumber number="${bill.amountFull - bill.amount - bill.printCost}" type="number" maxFractionDigits="0"/></p> --%>
     <p id="amountFirstExpiredDate${bill.identificationCode}" style="display: none"><g:formatNumber number="${bill.amountFirstExpiredDate}" type="number" maxFractionDigits="0"/></p>
     <p id="firstExpirationDate${bill.identificationCode}" style="display: none"><g:formatDate date="${bill.firstExpiredDate}" type="date"/></p>
     <p id="secondExpirationDate${bill.identificationCode}" style="display: none"><g:formatDate date="${bill.secondExpiredDate}" type="date"/></p>
