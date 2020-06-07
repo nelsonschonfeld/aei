@@ -43,6 +43,7 @@ class CashController {
                             "costs": g.message(code: 'cash.costs.label'),
                             "withdraw": g.message(code: 'cash.withdraw.label'),
                             "income": g.message(code: 'cash.income.label'),
+                            "eCollections": g.message(code: 'cash.eCollections.label'),
                             "total": g.message(code: 'cash.total.label'),
                             "comment": g.message(code: 'cash.comment.label'),
                             "user": g.message(code: 'cash.user.label')]
@@ -80,7 +81,7 @@ class CashController {
         def paymentsToCashTotal = findLastCash(preCashDetails)
 
         if(preCashDetails) {
-            respond new Cash(params), [model: [preDate: preCashDetails.dateCreated, preInitialAmount: preCashDetails.initalAmount, preCosts: preCashDetails.costs, preIncome: preCashDetails.income, preWithdraw: preCashDetails.withdraw, preTotal: preCashDetails.total, preComments: preCashDetails.comment, initialAmountNew: preCashDetails.total.abs(), income: paymentsToCashTotal, total: preCashDetails.total + paymentsToCashTotal]]
+            respond new Cash(params), [model: [preDate: preCashDetails.dateCreated, preInitialAmount: preCashDetails.initalAmount, preCosts: preCashDetails.costs, preIncome: preCashDetails.income, preECollections: preCashDetails.eCollections, preWithdraw: preCashDetails.withdraw, preTotal: preCashDetails.total, preComments: preCashDetails.comment, initialAmountNew: preCashDetails.total.abs(), income: paymentsToCashTotal, total: preCashDetails.total + paymentsToCashTotal]]
             return
         }
         // Monto del cierre de caja actual
@@ -97,9 +98,11 @@ class CashController {
         }
 
         def messageError = ""
-        if (!cash.income) {
-            messageError = "No se han generado nuevos cobros de cuotas para poder generar el cierre de caja."
+
+        if (cash.eCollections > cash.income) {
+            messageError = "El monto de ingresos por pagos electrónicos no puede ser mayor que el ingreso por pago de cuotas."
         }
+
         if (cash.total < 0) {
             messageError = "El total en el cierre de caja no puede ser negativo."
         }
@@ -112,14 +115,15 @@ class CashController {
             def initialAmount = Double.parseDouble(params.initalAmount)
             def costs = Double.parseDouble(params.costs).abs()
             def withdraw = Double.parseDouble(params.withdraw).abs()
+            def eCollections = Double.parseDouble(params.eCollections).abs()
             def total = paymentsToCashTotal
 
             if(preCashDetails) {
-                render(view: "create", model: [cash: cash, preDate: preCashDetails.dateCreated, preInitialAmount: preCashDetails.initalAmount, preCosts: preCashDetails.costs, preIncome: preCashDetails.income, preWithdraw: preCashDetails.withdraw, preTotal: preCashDetails.total, preComments: preCashDetails.comment, initialAmountNew: preCashDetails.total, income: paymentsToCashTotal, total: initialAmount - costs - withdraw + total])
+                render(view: "create", model: [cash: cash, preDate: preCashDetails.dateCreated, preInitialAmount: preCashDetails.initalAmount, preCosts: preCashDetails.costs, preIncome: preCashDetails.income, preCollEections: preCashDetails.eCollections, preWithdraw: preCashDetails.withdraw, preTotal: preCashDetails.total, preComments: preCashDetails.comment, initialAmountNew: preCashDetails.total, income: paymentsToCashTotal, total: initialAmount - costs - withdraw - eCollections + total])
                 return
             }
             // Monto del cierre de caja actual
-            render(view: "create", model: [cash: cash, initialAmountNew: 0, income: paymentsToCashTotal, total: initialAmount - costs - withdraw + total])
+            render(view: "create", model: [cash: cash, initialAmountNew: 0, income: paymentsToCashTotal, total: initialAmount - costs - withdraw - eCollections + total])
             return
         }
 
@@ -136,6 +140,7 @@ class CashController {
         cash.total =  Double.parseDouble(params.total)
         cash.withdraw =  Double.parseDouble(params.withdraw)
         cash.income =  Double.parseDouble(params.income)
+        cash.eCollections =  Double.parseDouble(params.eCollections)
 
         cash.save flush:true
 

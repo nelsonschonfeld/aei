@@ -10,7 +10,8 @@
                 var costs = parseFloat($('#costs').val())
                 var withdraw = parseFloat($('#withdraw').val())
                 var income = parseFloat($('#income').val())
-                $('#total').val(initalAmount - costs - withdraw + income);
+                var eCollections = parseFloat($('#eCollections').val())
+                $('#total').val(initalAmount - costs - withdraw + income - eCollections);
                 $('#valueTotal').val($('#total').val());
             }
         </script>
@@ -60,7 +61,11 @@
                         </div>
 
                         <div>
-                            <span><label>- Ingresos ($):</label> ${preIncome}</span>
+                            <span><label>- Ingresos por pago de cuotas ($):</label> ${preIncome}</span>
+                        </div>
+
+                        <div>
+                            <span><label>- Ingresos por pagos electrónicos ($):</label> ${preECollections}</span>
                         </div>
 
                         <div>
@@ -73,7 +78,7 @@
 
                     </fieldset>
 
-                    <f:all bean="cash" except="comment,initalAmount,total,income,withdraw,costs"/>
+                    <f:all bean="cash" except="comment,initalAmount,total,income,withdraw,costs,eCollections"/>
 
                     <f:field bean="cash" property="initalAmount" required="false">
                         <g:field type="number" min="0" name="initalAmountDisable" value="${initialAmountNew}" required="" id="initialAmountNew" disabled="true"/>
@@ -91,6 +96,10 @@
                     <f:field bean="cash" property="income" required="false">
                         <g:field type="number" min="0" name="incomeDisable" value="${income}" id="income" required="" disabled="true"/>
                         <g:hiddenField name="${property}" value="${income}" />
+                    </f:field>
+
+                    <f:field bean="cash" property="eCollections">
+                        <g:field type="number" min="0" name="${property}" value="${value ? value : 0}" required="false" id="eCollections" onchange="getAmountReturned()"/>
                     </f:field>
 
                     <f:field bean="cash" property="total">

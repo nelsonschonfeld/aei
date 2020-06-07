@@ -4,6 +4,7 @@ class Cash {
 
   Date dateCreated = new Date()
     Double initalAmount
+    Double eCollections
     Double costs
     Double total
     String comment
@@ -17,6 +18,7 @@ class Cash {
         costs nullable:false
         withdraw nullable:false
         income nullable:false
+        eCollections nullable:true
         total (nullable:true, editable: false)
         comment nullable:true
         user(display:false, nullable:true)
