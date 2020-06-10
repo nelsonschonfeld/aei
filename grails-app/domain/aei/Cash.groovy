@@ -2,7 +2,7 @@ package aei
 
 class Cash {
 
-  Date dateCreated = new Date()
+    Date dateCreated = new Date()
     Double initalAmount
     Double eCollections
     Double costs
@@ -11,6 +11,8 @@ class Cash {
     User user
     Double withdraw
     Double income
+    String updatedByUser
+    Date lastUpdated
 
     static constraints = {
         dateCreated(nullable:false, editable: false,  unique:true)
@@ -22,5 +24,7 @@ class Cash {
         total (nullable:true, editable: false)
         comment nullable:true
         user(display:false, nullable:true)
+        lastUpdated(display:false, nullable:true)
+        updatedByUser(display:false, nullable:true)
     }
 }

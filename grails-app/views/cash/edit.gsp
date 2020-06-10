@@ -4,6 +4,17 @@
         <meta name="layout" content="main" />
         <g:set var="entityName" value="${message(code: 'cash.label', default: 'Cash')}" />
         <title><g:message code="default.edit.label" args="[entityName]" /></title>
+        <script type="text/javascript">
+            function getAmountReturned() {
+                var initalAmount = parseFloat($('#initalAmount').val())
+                var costs = parseFloat($('#costs').val())
+                var withdraw = parseFloat($('#withdraw').val())
+                var income = parseFloat($('#income').val())
+                var eCollections = parseFloat($('#eCollections').val())
+                $('#total').val(initalAmount - costs - withdraw + income - eCollections);
+                $('#valueTotal').val($('#total').val());
+            }
+        </script>
     </head>
     <body>
         <a href="#edit-cash" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
@@ -29,7 +40,29 @@
             <g:form resource="${this.cash}" method="PUT">
                 <g:hiddenField name="version" value="${this.cash?.version}" />
                 <fieldset class="form">
-                    <f:all bean="cash" order="dateCreated,initalAmount,costs,total"/>
+
+                    <f:all bean="cash" except="initalAmount,withdraw,costs,eCollections,income,comment"/>
+
+                    <f:field bean="cash" property="initalAmount">
+                        <g:field type="number" min="0" name="${property}" value="${value ? value : 0}" required="" id="initalAmount" onchange="getAmountReturned()"/>
+                    </f:field>
+
+                    <f:field bean="cash" property="costs">
+                        <g:field type="number" min="0" name="${property}" value="${value ? value : 0}" required="" id="costs" onchange="getAmountReturned()"/>
+                    </f:field>
+
+                    <f:field bean="cash" property="withdraw">
+                        <g:field type="number" min="0" name="${property}" value="${value ? value : 0}" required="" id="withdraw" onchange="getAmountReturned()"/>
+                    </f:field>
+
+                    <f:field bean="cash" property="income">
+                        <g:field type="number" min="0" name="${property}" value="${value ? value : 0}" required="" id="income" onchange="getAmountReturned()"/>
+                    </f:field>
+
+                    <f:field bean="cash" property="eCollections">
+                        <g:field type="number" min="0" name="${property}" value="${value ? value : 0}" required="" id="eCollections" onchange="getAmountReturned()"/>
+                    </f:field>
+
                     <f:field bean="cash" property="comment">
                         <g:textArea name="comment" rows="3" cols="60"/>
                     </f:field>

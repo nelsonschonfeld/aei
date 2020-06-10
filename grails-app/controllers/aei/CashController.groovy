@@ -158,6 +158,7 @@ class CashController {
     }
 
     @Transactional
+    @Secured(['ROLE_ADMIN'])
     def update(Cash cash) {
         if (cash == null) {
             transactionStatus.setRollbackOnly()
@@ -170,6 +171,15 @@ class CashController {
             respond cash.errors, view:'edit'
             return
         }
+
+        cash.initalAmount =  Double.parseDouble(params.initalAmount)
+        cash.costs =  Double.parseDouble(params.costs)
+        cash.total =  Double.parseDouble(params.total)
+        cash.withdraw =  Double.parseDouble(params.withdraw)
+        cash.income =  Double.parseDouble(params.income)
+        cash.eCollections =  Double.parseDouble(params.eCollections)
+        cash.lastUpdated = new Date()
+        cash.updatedByUser = springSecurityService.currentUser
 
         cash.save flush:true
 

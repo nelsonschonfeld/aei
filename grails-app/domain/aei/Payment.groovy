@@ -17,13 +17,17 @@ class Payment {
     String updatedByUser
 
     static constraints = {
-        feeCode nullable:true
-        fee nullable:true
-        amountPaid nullable:false
         student nullable:true
         course nullable:true
         inscription nullable:true
+        fee nullable:true
+        feeCode nullable:true
+        amountDelivered nullable:false
+        amountPaid nullable:false
+        amountReturned nullable:false
         status nullable:true
+        dateCreated nullable:true
+        lastUpdated (display:false, nullable:true)
         updatedByUser(display:false, nullable:true)
     }
 }
