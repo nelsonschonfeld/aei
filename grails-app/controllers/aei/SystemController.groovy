@@ -28,9 +28,16 @@ class SystemController {
 
         def filename = "BKP-${database}-${new Date().format('yyyyMMdd')}"
         def sqlfilename = "${filename}.sql"
- 
-        def command = "mysqldump --opt --user=${user} --password=${password} ${database}"
- 
+
+        def command = ""
+        if (Environment.current == Environment.DEVELOPMENT) {
+            // Export develop
+            command = "mysqldump --opt --user=${user} --password=${password} ${database}"
+        } else {
+            // Export en prod
+            command = "mysqldump -u ${user} -p${password} ${database} > ${sqlfilename}"
+        }
+
         def dump = command.execute()
         dump.waitFor()
         def file = new File(sqlfilename)
