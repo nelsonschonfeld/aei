@@ -26,7 +26,7 @@
                 class="searchSelect"
                 id="course"
                 name="course"
-                from="${aei.Course.findAll{ year >= Calendar.getInstance().get(Calendar.YEAR).minus(1) }}"
+                from="${aei.Course.findAll()}"
                 optionKey="id"
                 optionValue="id"
                 noSelection="['':'Selecciona un curso']"
