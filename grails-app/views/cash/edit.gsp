@@ -44,7 +44,7 @@
                     <f:all bean="cash" except="initalAmount,withdraw,costs,eCollections,income,comment"/>
 
                     <f:field bean="cash" property="initalAmount">
-                        <g:field type="number" min="0" name="${property}" value="${value ? value : 0}" required="" id="initalAmount" onchange="getAmountReturned()"/>
+                        <g:field type="number" min="0" name="${property}" value="${value ? value : 0}" disabled="true" required="" id="initalAmount" onchange="getAmountReturned()"/>
                     </f:field>
 
                     <f:field bean="cash" property="costs">
@@ -56,7 +56,7 @@
                     </f:field>
 
                     <f:field bean="cash" property="income">
-                        <g:field type="number" min="0" name="${property}" value="${value ? value : 0}" required="" id="income" onchange="getAmountReturned()"/>
+                        <g:field type="number" min="0" name="${property}" value="${value ? value : 0}" disabled="true" required="" id="income" onchange="getAmountReturned()"/>
                     </f:field>
 
                     <f:field bean="cash" property="eCollections">
