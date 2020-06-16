@@ -21,13 +21,11 @@
     }
 $(document).ready(function(){
     var fillList = parseModelToJS('${pdf as JSON}');
-    var doc = new jsPDF({orientation: 'landscape', format: 'legal'});
+    var doc = new jsPDF('p', 'mm', [481.89, 623.62]);
     var bill = 1;
-    var y = 0;
-    var x = 0;
 
     fillList.forEach(function(element) {
-        if (bill !== 1 && bill%2 !== 0) { // si no es la boleta uno y es impar agrego una hoja
+        if (bill !== 1) {//es uno solo por hoja
             doc.addPage();
         }
         JsBarcode("#barcode"+element.identificationCode, element.identificationCode, {
@@ -51,74 +49,69 @@ $(document).ready(function(){
         let printAmount = "Costo impresión: $"+$("#printCost"+element.identificationCode).text();
 
         //1er cuota (instituto)
-        doc.addImage(jpegUrl, 'JPEG', 75+x, 10);
+        doc.addImage(jpegUrl, 'JPEG', 75, 10);
         doc.setFontSize(12);
         doc.setFont('arial', 'bold');
         //alumno - curso
-        doc.text(50+x, 35, student);
+        doc.text(50, 35, student);
         doc.setFontSize(11);
         doc.setFont('arial', '');
         //detalle
-        doc.text(50+x, 45, detail);
-        doc.text(100+x, 45, detail2);
+        doc.text(50, 45, detail);
+        doc.text(100, 45, detail2);
         //horario cobro
-        doc.text(50+x, 50, 'Horario de cobro: Lunes a viernes de 14:30 a 19:00');
+        doc.text(50, 50, 'Horario de cobro: Lunes a viernes de 14:30 a 19:00');
         //comments
-        doc.text(30+x, 55, 'Observaciones:');
-        doc.text(30+x, 60, $("#comment"+element.identificationCode).text());
+        doc.text(30, 55, 'Observaciones:');
+        doc.text(30, 60, $("#comment"+element.identificationCode).text());
         //a cuenta y saldo labels
-        doc.text(30+x, 70, 'A cuenta:');
-        doc.text(30+x, 75, 'Saldo:');
+        doc.text(30, 70, 'A cuenta:');
+        doc.text(30, 75, 'Saldo:');
         //descuento %
-        doc.text(120+x, 70, discount);
+        doc.text(120, 70, discount);
         //costo impresion
-        doc.text(120+x, 75, printAmount);
+        doc.text(120, 75, printAmount);
         //1er vencimiento
         doc.setFont('arial', 'bold');
-        doc.text(120+x, 80, bill1);
+        doc.text(120, 80, bill1);
         //2do vencimiento
-        doc.text(120+x, 88, bill2);
+        doc.text(120, 88, bill2);
 
         //2da cuota (alumno)
         doc.setFontSize(12);
         //alumno - curso
-        doc.text(50+x, 145, student);
+        doc.text(50, 145, student);
         doc.setFontSize(11);
         doc.setFont('arial', '');
         //detalle
-        doc.text(50+x, 155, detail);
-        doc.text(100+x, 155, detail2);
+        doc.text(50, 155, detail);
+        doc.text(100, 155, detail2);
         //comments
-        doc.text(30+x, 165, 'Observaciones:');
-        doc.text(30+x, 170, $("#comment"+element.identificationCode).text());
+        doc.text(30, 165, 'Observaciones:');
+        doc.text(30, 170, $("#comment"+element.identificationCode).text());
         //a cuenta y saldo labels
-        doc.text(30+x, 180, 'A cuenta:');
-        doc.text(30+x, 185, 'Saldo:');
+        doc.text(30, 180, 'A cuenta:');
+        doc.text(30, 185, 'Saldo:');
         //descuento %
-        doc.text(120+x, 180, discount);
+        doc.text(120, 180, discount);
         //costo impresion
-        doc.text(120+x, 185, printAmount);
+        doc.text(120, 185, printAmount);
         //1er vencimiento
         doc.setFont('arial', 'bold');
-        doc.text(120+x, 190, bill1);
+        doc.text(120, 190, bill1);
         //2do vencimiento
-        doc.text(120+x, 198, bill2);
+        doc.text(120, 198, bill2);
 
 
         // sección vertical eje y igual
         //alumno - segment
         doc.setFont('arial', '');
-        doc.text(12+x, 195, student, null, 90);
+        doc.text(12, 195, student, null, 90);
         //1er vencimiento
-        doc.text(12+x, 120, bill1, null, 90);
+        doc.text(12, 120, bill1, null, 90);
         //2do vencimiento
-        doc.text(12+x, 60, bill2, null, 90);
+        doc.text(12, 60, bill2, null, 90);
 
-        if (bill%2 === 0) { // si es par reinicio el eje x
-            x = 0;
-        } else {
-            x = 170;
-        }
         bill = bill + 1;
     });
 
