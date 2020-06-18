@@ -27,7 +27,7 @@ class SystemController {
         }
 
         def filename = "BKP-${database}-${new Date().format('yyyyMMdd')}"
-        def sqlfilename = "${filename}.sql"
+        def sqlfilename = "C:/backup/${filename}.sql"
 
         def command = ""
         if (Environment.current == Environment.DEVELOPMENT) {
@@ -35,19 +35,11 @@ class SystemController {
             command = "mysqldump --opt --user=${user} --password=${password} ${database}"
         } else {
             // Export en prod
-            command = "mysqldump -u ${user} -p${password} ${database} > ${sqlfilename}"
+            command = "mysqldump -u ${user} -p${password} ${database} --result-file=${sqlfilename}"
         }
 
         def dump = command.execute()
         dump.waitFor()
-        def file = new File(sqlfilename)
-        file.write(dump.text)
-
-        if (file.exists()) {
-            response.setContentType("application/octet-stream")
-            response.setHeader("Content-disposition", "filename=${file.name}")
-            response.outputStream << file.bytes
-        }
         return
     }
 }
