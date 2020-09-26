@@ -104,6 +104,13 @@ class InscriptionController {
             return
         }
 
+        def inscriptionList = Inscription.findAllWhere(course: inscription?.course, student: person)
+        if (inscriptionList.size() >= 1) {
+            flash.error = "El Alumno ya se encuentra inscripto al Curso"
+            respond inscription, view:'create'
+            return
+        }
+
         try {
             inscription.id = inscription.course.id + "_" + inscription.student.toString()
             inscription.updatedByUser = springSecurityService.currentUser.username

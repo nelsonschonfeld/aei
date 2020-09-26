@@ -76,7 +76,7 @@
                     <g:select
                             id="course"
                             name="course"
-                            from="${aei.Course.list().findAll { course -> course.status.equals(enums.CourseStatusEnum.Abierto) }}"
+                            from="${aei.Course.list().findAll { course -> course.status.equals(enums.CourseStatusEnum.Abierto) && course?.year >= new Date().format( 'yyyy' )}}"
                             optionKey="id"
                             optionValue="id"
                             />

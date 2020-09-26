@@ -95,15 +95,15 @@ class FeeController {
     }
 
     def findStudentForCourse() {
-        def inscriptionCourse = Inscription.read(params.idInscription).course
-        def studentsList = Inscription.findAllWhere(course: inscriptionCourse).student
+        def course = Course.read(params.idCourse)
+        def studentsList = Inscription.findAllWhere(course: course).student
         render g.select(id: 'studentsInscriptos', name: 'studentsInscriptos', multiple: "multiple",
                 from: studentsList, optionKey: 'dni'
         )
     }
 
     def findDiscountByStudent() {
-        def inscriptionCourse = Inscription.read(params.idInscription).course
+        def inscriptionCourse = Course.read(params.idCourse)
         def studentsList = Inscription.findAllWhere(course: inscriptionCourse).student
         def discountStudentsList = []
         studentsList.each { it ->
@@ -127,7 +127,7 @@ class FeeController {
     }
 
     def findAmountPaidByStudent() {
-        def inscriptionCourse = Inscription.read(params.idInscription).course
+        def inscriptionCourse = Course.read(params.idCourse)
         def studentsList = Inscription.findAllWhere(course: inscriptionCourse).student
         def owedStudentsList = []
         studentsList.each { it ->
@@ -156,8 +156,7 @@ class FeeController {
     }
 
     def findCourseDetail() {
-        def inscriptionCourse = Inscription.read(params.idInscrip).course
-        def courseDetail = Course.get(inscriptionCourse.id)
+        def courseDetail = Course.get(params.idCourse)
         List<String> stringList = new ArrayList<String>();
         !courseDetail.monday ?: stringList.add("Lunes")
         !courseDetail.tuesday ?: stringList.add("Martes")
@@ -197,10 +196,18 @@ class FeeController {
                     identificationCode = Integer.toString(lastFee.id + 1)
                 }
                 newFee.identificationCode = identificationCode
-                def inscriptionObject = Inscription.get(params.inscriptionsSelect)
-                newFee.inscription = inscriptionObject
+                def course = Course.read(params.courseSelected)
+                newFee.course = course
                 def studentObject = Person.findByDni(student)
                 newFee.student = studentObject
+                def inscriptionList = Inscription.findAllWhere(course: course, student: studentObject)
+                if (inscriptionList.size() > 1) {
+                    transactionStatus.setRollbackOnly()
+                    flash.error = "No se pudo generar la cuota. Intente nuevamente."
+                    respond newFee, view: 'create'
+                }
+                def inscriptionObject = inscriptionList[0]
+                newFee.inscription = inscriptionObject
 
                 //caso de registramos solo la inscripción
                 def isInscriptionWithoutFee = false
@@ -214,8 +221,7 @@ class FeeController {
                 newFee.testCost = params.checkCourseTestCost ? Double.parseDouble(params.courseTestCost) : 0
                 newFee.printCost = params.checkCoursePrintCost ? Double.parseDouble(params.coursePrintCost) : 0
                 newFee.year = params.courseYear
-                def course = Course.read(inscriptionObject.course.id)
-                newFee.course = inscriptionObject.course
+
                 newFee.discountAmount = Inscription.findWhere(student: studentObject, course: inscriptionObject.course).discountAmount
 
                 //busco las deudas
@@ -375,7 +381,7 @@ class FeeController {
         String message = null
 
         //validacion Cursos
-        if (params.inscriptionsSelect == null || params.inscriptionsSelect == "0" || params.inscriptionsSelect == 0) {
+        if (params.courseSelected == null || params.courseSelected == "0" || params.courseSelected == 0) {
             message = "Debe seleccionar el Curso Inscripto"
             return message
         }
