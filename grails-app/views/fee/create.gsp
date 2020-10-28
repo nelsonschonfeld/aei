@@ -9,42 +9,42 @@
     <asset:stylesheet src="select2.min.css"/>
     <asset:javascript src="select2.min.js"/>
 <g:javascript>
-        function getStudentForCourse(idInscription) {
+        function getStudentForCourse(idCourse) {
             $.ajax({
                 type: 'POST',
                 url: '/fee/findStudentForCourse',
-                data: {idInscription: idInscription},
+                data: {idCourse: idCourse},
                 success: function (resp) {
                     $("#studentsInscriptos").html(resp);
                 }
             });
         }
-        function getDiscountByStudent(idInscription) {
+        function getDiscountByStudent(idCourse) {
             $.ajax({
                 type: 'POST',
                 url: '/fee/findDiscountByStudent',
-                data: {idInscription: idInscription},
+                data: {idCourse: idCourse},
                 success: function (resp) {
                     $("#discountsByStudent").html(resp);
                 }
             });
         }
-        function getOwedByStudent(idInscription) {
+        function getOwedByStudent(idCourse) {
             $.ajax({
                 type: 'POST',
                 url: '/fee/findAmountPaidByStudent',
-                data: {idInscription: idInscription},
+                data: {idCourse: idCourse},
                 success: function (resp) {
                     $("#owedByStudent").html(resp);
                 }
             });
         }
 
-        function getCourseDetails(idInscrip) {
+        function getCourseDetails(idCourse) {
             $.ajax({
                 type: 'POST',
                 url: '/fee/findCourseDetail',
-                data: {idInscrip: idInscrip},
+                data: {idCourse: idCourse},
                 success: function (resp) {
                     $("#courseAmount").val(resp.courseAmount);
                     //inscrpcion
@@ -123,12 +123,11 @@
                 </label>
                 <g:select
                         class="select-basic-single"
-                        id="inscriptionsSelect"
-                        name="inscriptionsSelect"
-
-                        from="${aei.Inscription.list().findAll { courseIns -> courseIns.course?.status?.equals(enums.CourseStatusEnum.Abierto) && courseIns.course?.year >= new Date().format( 'yyyy' )}.unique()}"
+                        id="courseSelected"
+                        name="courseSelected"
+                        from="${aei.Course.list().findAll { courseIns -> courseIns?.status?.equals(enums.CourseStatusEnum.Abierto) && courseIns?.year >= new Date().format( 'yyyy' )}}"
                         optionKey="id"
-                        optionValue="courseId"
+                        optionValue="id"
                         noSelection="['0': 'Cursos Inscriptos']"
                         onchange="getStudentForCourse(this.value);getDiscountByStudent(this.value);getOwedByStudent(this.value);getCourseDetails(this.value)"/>
             </div>
